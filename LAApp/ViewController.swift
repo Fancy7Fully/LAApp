@@ -7,14 +7,66 @@
 //
 
 import UIKit
+import QuartzCore
+
+let kTopInset: CGFloat = 100.0;
+let kButtonsTopInset: CGFloat = 100.0;
 
 class ViewController: UIViewController {
-
+  var headerLabel: UILabel;
+  var matrixManipulationButton: UIButton;
+  
+  required init?(coder: NSCoder) {
+    self.headerLabel = HeaderView.init(frame: CGRect.zero);
+    self.matrixManipulationButton = UIButton.init(frame: CGRect.zero);
+    
+    super.init(coder: coder);
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view.
+    
+    setupButtons();
+    self.view.addSubview(self.headerLabel);
+    self.view.addSubview(self.matrixManipulationButton);
   }
-
+  
+  override func viewDidLayoutSubviews() {
+    self.headerLabel.sizeToFit();
+    self.headerLabel.frame = CGRect.init(
+      x: calculateX(self.view.bounds.size.width, self.headerLabel.frame.size.width),
+      y: kTopInset,
+      width: self.headerLabel.frame.size.width,
+      height: self.headerLabel.frame.size.height);
+    
+    self.matrixManipulationButton.sizeToFit();
+    self.matrixManipulationButton.frame = CGRect.init(
+      x: calculateX(self.view.bounds.size.width, self.matrixManipulationButton.frame.size.width + 20),
+      y: kTopInset + kButtonsTopInset,
+      width: self.matrixManipulationButton.frame.size.width + 20,
+      height: self.matrixManipulationButton.frame.size.height + 10);
+    self.matrixManipulationButton.layer.cornerRadius = 10.0;
+    self.matrixManipulationButton.clipsToBounds = true;
+    
+    self.matrixManipulationButton.addTarget(
+      self,
+      action: #selector(didTapMatrixManipulationButton),
+      for: UIControl.Event.touchUpInside);
+  }
+  
+  @objc func didTapMatrixManipulationButton() {
+    print("lolololo");
+  }
+  
+  private func setupButtons() {
+    self.matrixManipulationButton.setTitle("Matrix calculation", for: UIControl.State.normal);
+    self.matrixManipulationButton.backgroundColor = UIColor.init(displayP3Red: 0.0, green: 140.0/255.0, blue: 174.0/255.0, alpha: 1.0);
+    self.matrixManipulationButton.setTitleColor(UIColor.white, for: UIControl.State.normal);
+  }
+  
+  private func calculateX(_ screenWidth: CGFloat, _ viewWidth: CGFloat) -> CGFloat {
+    return (screenWidth - viewWidth) / 2;
+  }
 
 }
 
