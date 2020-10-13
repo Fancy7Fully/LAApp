@@ -16,6 +16,10 @@ class MainViewController: UIViewController {
   var headerLabel: UILabel = HeaderView.init(frame: CGRect.zero);
   var matrixManipulationButton: UIButton = UIButton.init(frame: CGRect.zero);
   
+  override func viewWillAppear(_ animated: Bool) {
+    self.navigationController?.setNavigationBarHidden(true, animated: false);
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
