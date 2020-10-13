@@ -12,21 +12,16 @@ import QuartzCore
 let kTopInset: CGFloat = 100.0;
 let kButtonsTopInset: CGFloat = 100.0;
 
-class ViewController: UIViewController {
-  var headerLabel: UILabel;
-  var matrixManipulationButton: UIButton;
-  
-  required init?(coder: NSCoder) {
-    self.headerLabel = HeaderView.init(frame: CGRect.zero);
-    self.matrixManipulationButton = UIButton.init(frame: CGRect.zero);
-    
-    super.init(coder: coder);
-  }
+class MainViewController: UIViewController {
+  var headerLabel: UILabel = HeaderView.init(frame: CGRect.zero);
+  var matrixManipulationButton: UIButton = UIButton.init(frame: CGRect.zero);
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.navigationController?.setNavigationBarHidden(true, animated: false);
     setupButtons();
+    self.view.backgroundColor = UIColor.white;
     self.view.addSubview(self.headerLabel);
     self.view.addSubview(self.matrixManipulationButton);
   }
@@ -55,7 +50,9 @@ class ViewController: UIViewController {
   }
   
   @objc func didTapMatrixManipulationButton() {
-    print("lolololo");
+    let controller : UIViewController = MatrixManipulationViewController();
+    
+    self.navigationController?.pushViewController(controller, animated: true);
   }
   
   private func setupButtons() {
