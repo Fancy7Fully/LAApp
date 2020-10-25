@@ -54,7 +54,7 @@ class MainViewController: UIViewController {
   }
   
   @objc func didTapMatrixManipulationButton() {
-    let controller : UIViewController = MatrixManipulationViewController();
+    let controller : UIViewController = MatrixManipulationLandingViewController();
     
     self.navigationController?.pushViewController(controller, animated: true);
   }

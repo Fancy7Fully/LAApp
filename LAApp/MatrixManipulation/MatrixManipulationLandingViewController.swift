@@ -9,12 +9,12 @@
 import Foundation
 import UIKit
 
-class MatrixManipulationViewController : UIViewController {
+class MatrixManipulationLandingViewController : UIViewController {
+  var buttonOne: UIButton = UIButton();
   
   override func viewDidLoad() {
-    super.viewDidLoad()
+    super.viewDidLoad();
     
-    self.view.backgroundColor = .red
-    self.navigationController?.setNavigationBarHidden(false, animated: false)
+    
   }
 }
