@@ -16,7 +16,6 @@ class HeaderView: UILabel {
     self.text = "Welcome to LA App";
     self.textColor = UIColor.black;
     self.font = UIFont.preferredFont(forTextStyle: .headline);
-    self.adjustsFontForContentSizeCategory = true;
   }
   
   required init(coder: NSCoder) {
