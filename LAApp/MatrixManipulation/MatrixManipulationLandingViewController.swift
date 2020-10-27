@@ -11,17 +11,10 @@ import UIKit
 
 let defaultColor : UIColor = UIColor.init(displayP3Red: 0.0, green: 140.0/255.0, blue: 174.0/255.0, alpha: 1.0);
 
+let buttonCornerRadius: CGFloat = 10.0;
+
 class MatrixManipulationLandingViewController : UIViewController {
-  var buttonOne: UIButton = UIButton(); // A + B
-  var buttonTwo: UIButton = UIButton(); // A - B
-  var buttonThree: UIButton = UIButton(); // A x B
-  var buttonFour: UIButton = UIButton(); // A + B x C
-  var buttonFive: UIButton = UIButton(); // A x B + C
-  var buttonSix: UIButton = UIButton(); // A - B x C
-  var buttonSeven: UIButton = UIButton(); // A x B - C
-  var buttonEight: UIButton = UIButton(); // A x B x C
-  var buttonNine: UIButton = UIButton(); // A x B x inv(A)
-  var buttonTen: UIButton = UIButton(); // inv(A)
+  var buttonArray: [UIButton] = [];
   var stackView: UIStackView = UIStackView();
   var titleLabel: UILabel = UILabel();
   
@@ -37,62 +30,29 @@ class MatrixManipulationLandingViewController : UIViewController {
     titleLabel.text = "Select matrix manipulation"
     titleLabel.textColor = .black;
     titleLabel.font = UIFont.preferredFont(forTextStyle: .headline);
- 
-    buttonOne.setTitle("A + B", for: .normal);
-    buttonTwo.setTitle("A - B", for: .normal);
-    buttonThree.setTitle("A x B", for: .normal);
-    buttonFour.setTitle("A + B x C", for: .normal);
-    buttonFive.setTitle("A x B + C", for: .normal);
-    buttonSix.setTitle("A - B x C", for: .normal);
-    buttonSeven.setTitle("A x B - C", for: .normal);
-    buttonEight.setTitle("A x B x C", for: .normal);
-    buttonNine.setTitle("A x B x inv(A)", for: .normal);
-    buttonTen.setTitle("inv(A)", for: .normal);
     
-    buttonOne.backgroundColor = defaultColor;
-    buttonTwo.backgroundColor = defaultColor;
-    buttonThree.backgroundColor = defaultColor;
-    buttonFour.backgroundColor = defaultColor;
-    buttonFive.backgroundColor = defaultColor;
-    buttonSix.backgroundColor = defaultColor;
-    buttonSeven.backgroundColor = defaultColor;
-    buttonEight.backgroundColor = defaultColor;
-    buttonNine.backgroundColor = defaultColor;
-    buttonTen.backgroundColor = defaultColor;
+    stackView.addArrangedSubview(titleLabel)
+
+    for _ in 0...7 {
+      let button: UIButton = UIButton()
+      button.layer.cornerRadius = buttonCornerRadius
+      button.backgroundColor = defaultColor
+      button.widthAnchor.constraint(equalToConstant: 220.0).isActive = true
+      buttonArray.append(button)
+      stackView.addArrangedSubview(button)
+    }
     
-    buttonOne.layer.cornerRadius = 10.0;
-    buttonTwo.layer.cornerRadius = 10.0;
-    buttonThree.layer.cornerRadius = 10.0;
-    buttonFour.layer.cornerRadius = 10.0;
-    buttonFive.layer.cornerRadius = 10.0;
-    buttonSix.layer.cornerRadius = 10.0;
-    buttonSeven.layer.cornerRadius = 10.0;
-    buttonEight.layer.cornerRadius = 10.0;
-    buttonNine.layer.cornerRadius = 10.0;
-    buttonTen.layer.cornerRadius = 10.0;
+    buttonArray[0].setTitle("Matrix calculation", for: .normal)
+    buttonArray[1].setTitle("LU decomposition", for: .normal)
+    buttonArray[2].setTitle("QR decomposition", for: .normal)
+    buttonArray[3].setTitle("Diagonalization", for: .normal)
+    buttonArray[4].setTitle("REF & RREF", for: .normal)
+    buttonArray[5].setTitle("Solution to Linear System", for: .normal)
+    buttonArray[6].setTitle("Inverse and determinant", for: .normal)
+    buttonArray[7].setTitle("Rank", for: .normal)
     
-    buttonOne.widthAnchor.constraint(equalToConstant: 120.0).isActive = true;
-    buttonTwo.widthAnchor.constraint(equalToConstant: 120.0).isActive = true;
-    buttonThree.widthAnchor.constraint(equalToConstant: 120.0).isActive = true;
-    buttonFour.widthAnchor.constraint(equalToConstant: 120.0).isActive = true;
-    buttonFive.widthAnchor.constraint(equalToConstant: 120.0).isActive = true;
-    buttonSix.widthAnchor.constraint(equalToConstant: 120.0).isActive = true;
-    buttonSeven.widthAnchor.constraint(equalToConstant: 120.0).isActive = true;
-    buttonEight.widthAnchor.constraint(equalToConstant: 120.0).isActive = true;
-    buttonNine.widthAnchor.constraint(equalToConstant: 120.0).isActive = true;
-    buttonTen.widthAnchor.constraint(equalToConstant: 120.0).isActive = true;
+    buttonArray[0].addTarget(self, action: #selector(didTapMatrixCalculationButton), for: .touchUpInside)
     
-    stackView.addArrangedSubview(titleLabel);
-    stackView.addArrangedSubview(buttonOne);
-    stackView.addArrangedSubview(buttonTwo);
-    stackView.addArrangedSubview(buttonThree);
-    stackView.addArrangedSubview(buttonFour);
-    stackView.addArrangedSubview(buttonFive);
-    stackView.addArrangedSubview(buttonSix);
-    stackView.addArrangedSubview(buttonSeven);
-    stackView.addArrangedSubview(buttonEight);
-    stackView.addArrangedSubview(buttonNine);
-    stackView.addArrangedSubview(buttonTen);
     stackView.axis = .vertical;
     stackView.distribution = .equalSpacing;
     stackView.alignment = .center;
@@ -106,6 +66,15 @@ class MatrixManipulationLandingViewController : UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
+  // MARK: Button methods
+  @objc func didTapMatrixCalculationButton() {
+    let controller : UIViewController = MatrixCalculationSelectionViewController();
+    
+    self.navigationController?.pushViewController(controller, animated: true)
+  }
+  
+  // MARK: Lifecycle methods
+  
   override func viewDidLoad() {
     super.viewDidLoad();
     
@@ -113,8 +82,7 @@ class MatrixManipulationLandingViewController : UIViewController {
     self.view.backgroundColor = .white;
     self.view.addSubview(stackView);
     
-    let navigationBarHeight: CGFloat = self.navigationController?.navigationBar.frame.size.height ?? 0;
-    print(navigationBarHeight);
+    let navigationBarHeight: CGFloat = self.navigationController?.navigationBar.frame.size.height ?? 44.0;
     let deviceWidth: CGFloat = UIScreen.main.bounds.size.width;
     let deviceHeight: CGFloat = UIScreen.main.bounds.size.height;
     stackView.widthAnchor.constraint(equalToConstant: deviceWidth).isActive = true;

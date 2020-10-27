@@ -60,7 +60,7 @@ class MainViewController: UIViewController {
   }
   
   private func setupButtons() {
-    self.matrixManipulationButton.setTitle("Matrix calculation", for: UIControl.State.normal);
+    self.matrixManipulationButton.setTitle("Matrix related", for: UIControl.State.normal);
     self.matrixManipulationButton.backgroundColor = UIColor.init(displayP3Red: 0.0, green: 140.0/255.0, blue: 174.0/255.0, alpha: 1.0);
     self.matrixManipulationButton.setTitleColor(UIColor.white, for: UIControl.State.normal);
   }
