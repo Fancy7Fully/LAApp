@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+enum calculationType {
+  case APlusB, AMinusB, ATimesB, APlusBTimesC, ATimesBPlusC, AMinusBTimesC,ATimesBMinusC, ATimesBTimesC, ATimesBTimesAInverse
+}
+
 class MatrixCalculationSelectionViewController: UIViewController {
   var buttonArray: [UIButton] = [];
   var titleLabel: UILabel = UILabel();
@@ -50,6 +54,16 @@ class MatrixCalculationSelectionViewController: UIViewController {
     buttonArray[7].setTitle("A x B x C", for: .normal);
     buttonArray[8].setTitle("A x B x inv(A)", for: .normal);
     
+    buttonArray[0].addTarget(self, action: #selector(didTapAPlusBButton), for: .touchUpInside)
+    buttonArray[1].addTarget(self, action: #selector(didTapAMinusBButton), for: .touchUpInside)
+    buttonArray[2].addTarget(self, action: #selector(didTapATimesBButton), for: .touchUpInside)
+    buttonArray[3].addTarget(self, action: #selector(didTabAPlusBTimesCButton), for: .touchUpInside)
+    buttonArray[4].addTarget(self, action: #selector(didTabATimesBPlusCButton), for: .touchUpInside)
+    buttonArray[5].addTarget(self, action: #selector(didTabAMinusBTimesCButton), for: .touchUpInside)
+    buttonArray[6].addTarget(self, action: #selector(didTapATimesBMinusCButton), for: .touchUpInside)
+    buttonArray[7].addTarget(self, action: #selector(didTapATimesBTimesCButton), for: .touchUpInside)
+    buttonArray[8].addTarget(self, action: #selector(didTapATimesBTimesAInverseButton), for: .touchUpInside)
+    
     stackView.axis = .vertical;
     stackView.distribution = .equalSpacing;
     stackView.alignment = .center;
@@ -58,6 +72,46 @@ class MatrixCalculationSelectionViewController: UIViewController {
     stackView.layoutMargins = UIEdgeInsets.init(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0);
     stackView.isLayoutMarginsRelativeArrangement = true;
   }
+  
+  // MARK: Button methods
+  
+  @objc func didTapAPlusBButton() {
+    
+  }
+  
+  @objc func didTapAMinusBButton() {
+    
+  }
+  
+  @objc func didTapATimesBButton() {
+    
+  }
+  
+  @objc func didTabAPlusBTimesCButton() {
+    
+  }
+  
+  @objc func didTabATimesBPlusCButton() {
+    
+  }
+  
+  @objc func didTabAMinusBTimesCButton() {
+    
+  }
+  
+  @objc func didTapATimesBMinusCButton() {
+    
+  }
+  
+  @objc func didTapATimesBTimesCButton() {
+    
+  }
+  
+  @objc func didTapATimesBTimesAInverseButton() {
+    
+  }
+  
+  // MARK: Lifecycle methods
   
   override func viewDidLoad() {
     super.viewDidLoad()
