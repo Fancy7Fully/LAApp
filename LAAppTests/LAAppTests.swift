@@ -23,6 +23,40 @@ class LAAppTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
+  
+  func test2By2MatrixCreation() throws {
+    let col1: [Float] = [1, 2]
+    let col2: [Float] = [3, 4]
+    let matrix: Matrix = Matrix.init(entryArray: [col1, col2])
+    let matrixEntries: [[Float]] = matrix.entries
+    XCTAssertEqual(matrixEntries[0][0], 1.0)
+    XCTAssertEqual(matrixEntries[0][1], 2.0)
+    XCTAssertEqual(matrixEntries[1][0], 3.0)
+    XCTAssertEqual(matrixEntries[1][1], 4.0)
+  }
+  
+  func test1By1MatrixCreation() throws {
+    let matrix: Matrix = Matrix.init(entryArray: [[1.0]])
+    let matrixEntris: [[Float]] = matrix.entries
+    XCTAssertEqual(matrixEntris[0][0], 1.0)
+  }
+  
+  func test3By3MatrixCreation() throws {
+    let col1: [Float] = [1, 2, 3]
+    let col2: [Float] = [4, 5, 6]
+    let col3: [Float] = [7, 8, 9]
+    let matrix: Matrix = Matrix.init(entryArray: [col1, col2, col3])
+    let matrixEntries: [[Float]] = matrix.entries
+    XCTAssertEqual(matrixEntries[0][0], 1.0)
+    XCTAssertEqual(matrixEntries[0][1], 2.0)
+    XCTAssertEqual(matrixEntries[0][2], 3.0)
+    XCTAssertEqual(matrixEntries[1][0], 4.0)
+    XCTAssertEqual(matrixEntries[1][1], 5.0)
+    XCTAssertEqual(matrixEntries[1][2], 6.0)
+    XCTAssertEqual(matrixEntries[2][0], 7.0)
+    XCTAssertEqual(matrixEntries[2][1], 8.0)
+    XCTAssertEqual(matrixEntries[2][2], 9.0)
+  }
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.

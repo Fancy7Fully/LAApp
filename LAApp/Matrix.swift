@@ -45,9 +45,11 @@ class Matrix: NSObject {
     
     var entriesWithoutFirstRow: [[Float]] = []
     for i in 0...matrix.count - 1 {
+      var columnEntry: [Float] = []
       for j in 1...matrix.count - 1 {
-        entriesWithoutFirstRow[i].append(entries[i][j])
+        columnEntry.append(entries[i][j])
       }
+      entriesWithoutFirstRow.append(columnEntry)
     }
     
     for i in 0...matrix.count - 1 {
@@ -60,9 +62,9 @@ class Matrix: NSObject {
       
       let currentMatrix: Matrix = Matrix.init(entryArray: newEntries)
       if i % 2 == 0 {
-        det = det + currentMatrix.determinant * entries[0][i]
+        det = det + currentMatrix.determinant * entries[i][0]
       } else {
-        det = det - currentMatrix.determinant * entries[0][i]
+        det = det - currentMatrix.determinant * entries[i][0]
       }
     }
     
