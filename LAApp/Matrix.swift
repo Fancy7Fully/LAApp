@@ -44,17 +44,17 @@ class Matrix: NSObject {
     var det: Float = 0;
     
     var entriesWithoutFirstRow: [[Float]] = []
-    for i in 0...matrix.count - 1 {
+    for i in 0..<matrix.count {
       var columnEntry: [Float] = []
-      for j in 1...matrix.count - 1 {
+      for j in 1..<matrix.count {
         columnEntry.append(entries[i][j])
       }
       entriesWithoutFirstRow.append(columnEntry)
     }
     
-    for i in 0...matrix.count - 1 {
+    for i in 0..<matrix.count {
       var newEntries: [[Float]] = []
-      for j in 0...matrix.count - 1 {
+      for j in 0..<matrix.count {
         if i != j {
           newEntries.append(entriesWithoutFirstRow[j])
         }
