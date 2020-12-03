@@ -13,15 +13,19 @@ class MatrixCalculationInputViewController : UIViewController {
   var vStackView: UIStackView = UIStackView()
   var hStackView: UIStackView = UIStackView()
   var titleLabel: UILabel = UILabel()
+  var matrixCalculationType: calculationType;
   
   
-  convenience init() {
-    self.init(nibName:nil, bundle:nil)
+  convenience init(type: calculationType) {
+    self.init(nibName:nil, bundle:nil, type: type)
   }
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+  init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?, type: calculationType) {
+    matrixCalculationType = type
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    
+  }
+  
+  func setUp() {
     
   }
   
