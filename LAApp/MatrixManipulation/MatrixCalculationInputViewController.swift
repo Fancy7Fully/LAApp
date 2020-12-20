@@ -9,12 +9,15 @@
 import Foundation
 import UIKit
 
-class MatrixCalculationInputViewController : UIViewController {
+let matrixInputCornerRadius = 10.0
+
+class MatrixCalculationInputViewController : UIViewController, UITextViewDelegate {
   var vStackView: UIStackView = UIStackView()
   var hStackView: UIStackView = UIStackView()
   var titleLabel: UILabel = UILabel()
   var matrixCalculationType: calculationType;
-  var matrixInputField: UITextField = UITextField()
+  var matrixInputView: UITextView = UITextView()
+  var matrixInputViewHasValidInput = false
   
   convenience init(type: calculationType) {
     self.init(nibName:nil, bundle:nil, type: type)
@@ -30,24 +33,31 @@ class MatrixCalculationInputViewController : UIViewController {
     titleLabel.text = "Please Enter Matrix A"
     titleLabel.textColor = .black
     titleLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+    titleLabel.sizeToFit()
+    titleLabel.widthAnchor.constraint(equalToConstant: titleLabel.frame.size.width).isActive = true
+    titleLabel.heightAnchor.constraint(equalToConstant: titleLabel.frame.size.height).isActive = true
+    
     vStackView.addArrangedSubview(titleLabel)
     
-    matrixInputField.placeholder =
-      """
-      You can enter your matrix like: \
-      1 2 3 \
-      4 5 6 \
-      7 8 9
-      """;
-    matrixInputField.backgroundColor = .lightGray
-    matrixInputField.widthAnchor.constraint(equalToConstant: 200.0).isActive = true;
-    matrixInputField.heightAnchor.constraint(equalToConstant: 120.0).isActive = true;
-    matrixInputField.borderStyle = .roundedRect
-    matrixInputField.keyboardType = .numberPad
+    matrixInputView.text = """
+    Enter your matrix like:
+    1 2 3
+    4 5 6
+    7 8 9
+    """
+    matrixInputView.backgroundColor = .lightGray
+    matrixInputView.textColor = .darkGray
+    matrixInputView.layer.cornerRadius = CGFloat(matrixInputCornerRadius);
+    matrixInputView.isEditable = true
+    matrixInputView.delegate = self
     
-    vStackView.addArrangedSubview(matrixInputField);
+    matrixInputView.widthAnchor.constraint(equalToConstant: 200).isActive = true;
+    matrixInputView.heightAnchor.constraint(equalToConstant: 120).isActive = true;
+    matrixInputView.keyboardType = .numbersAndPunctuation
+    
+    vStackView.addArrangedSubview(matrixInputView);
     vStackView.axis = .vertical
-    vStackView.distribution = .equalSpacing
+//    vStackView.distribution = .equalCentering
     vStackView.alignment = .center
     vStackView.spacing = 4.0
     vStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -68,10 +78,41 @@ class MatrixCalculationInputViewController : UIViewController {
     self.view.backgroundColor = .white
     self.view.addSubview(vStackView)
     
-    let navigationBarHeight: CGFloat = self.navigationController?.navigationBar.frame.size.height ?? 44.0;
+//    let navigationBarHeight: CGFloat = self.navigationController?.navigationBar.frame.size.height ?? 44.0;
     let deviceWidth: CGFloat = UIScreen.main.bounds.size.width;
-    let deviceHeight: CGFloat = UIScreen.main.bounds.size.height;
+//    let deviceHeight: CGFloat = UIScreen.main.bounds.size.height;
     vStackView.widthAnchor.constraint(equalToConstant: deviceWidth).isActive = true;
-    vStackView.heightAnchor.constraint(equalToConstant: deviceHeight - navigationBarHeight).isActive = true;
+//    vStackView.heightAnchor.constraint(equalToConstant: deviceHeight - navigationBarHeight).isActive = true;
+    let touchDownEvent = UITapGestureRecognizer(target: self, action: #selector(self.didTouchOutside(_:)))
+    self.view.addGestureRecognizer(touchDownEvent)
+    
+  }
+  
+  @objc func didTouchOutside(_ sender: UITapGestureRecognizer) {
+    if (matrixInputView.isFirstResponder) {
+      matrixInputView.resignFirstResponder()
+    }
+  }
+  
+  func textViewDidBeginEditing(_ textView: UITextView) {
+    textView.becomeFirstResponder()
+    if (!matrixInputViewHasValidInput) {
+      textView.text = ""
+    }
+  }
+  
+  func textViewDidEndEditing(_ textView: UITextView) {
+    let currentText = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+    if (currentText.count == 0) {
+      textView.text = """
+      Enter your matrix like:
+      1 2 3
+      4 5 6
+      7 8 9
+      """
+      matrixInputViewHasValidInput = false
+    } else {
+      matrixInputViewHasValidInput = true
+    }
   }
 }
