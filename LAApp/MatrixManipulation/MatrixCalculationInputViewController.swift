@@ -68,8 +68,6 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  e99ab3d45aaa23fd6d48a4e05e41a64b690908fe
-  
   
   // MARK: Lifecycle methods
   
