@@ -84,7 +84,9 @@ class MatrixCalculationSelectionViewController: UIViewController {
   }
   
   @objc func didTapAMinusBButton() {
+    let controller: UIViewController = MatrixCalculationInputViewController(type: .APlusB)
     
+    self.navigationController?.pushViewController(controller, animated: true)
   }
   
   @objc func didTapATimesBButton() {
