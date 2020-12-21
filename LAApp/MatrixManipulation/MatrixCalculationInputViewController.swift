@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  MatrixCalculationInputViewController.swift
 //  LAApp
 //
 //  Created by Zhou Zhiyuan on 10/30/20.
@@ -18,6 +18,18 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   var matrixCalculationType: calculationType;
   var matrixInputView: UITextView = UITextView()
   var matrixInputViewHasValidInput = false
+  var numberOfStepsNeededForInput: Int = 0
+  var currentStepNumber: Int = 0
+  var clearButton: UIButton = UIButton()
+  var nextStepButton: UIButton = UIButton()
+  let matrixInputViewPlaceholderText = """
+      Enter your matrix like this:
+      1 0 0
+      0 1 0
+      0 0 1
+      """
+  
+  // MARK: init
   
   convenience init(type: calculationType) {
     self.init(nibName:nil, bundle:nil, type: type)
@@ -26,10 +38,11 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?, type: calculationType) {
     matrixCalculationType = type
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    setUp()
+    UpdateSteps()
+    setUpViews()
   }
   
-  func setUp() {
+  func setUpViews() {
     titleLabel.text = "Please Enter Matrix A"
     titleLabel.textColor = .black
     titleLabel.font = UIFont.preferredFont(forTextStyle: .headline)
@@ -39,17 +52,13 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     
     vStackView.addArrangedSubview(titleLabel)
     
-    matrixInputView.text = """
-    Enter your matrix like:
-    1 2 3
-    4 5 6
-    7 8 9
-    """
-    matrixInputView.backgroundColor = .lightGray
+    matrixInputView.text = matrixInputViewPlaceholderText
+    matrixInputView.backgroundColor = UIColor.init(red: 220.0/255.0, green: 220.0/255.0, blue: 220.0/255.0, alpha: 1.0)
     matrixInputView.textColor = .darkGray
     matrixInputView.layer.cornerRadius = CGFloat(matrixInputCornerRadius);
     matrixInputView.isEditable = true
     matrixInputView.delegate = self
+    matrixInputView.font = UIFont.systemFont(ofSize: 15.0)
     
     matrixInputView.widthAnchor.constraint(equalToConstant: 200).isActive = true;
     matrixInputView.heightAnchor.constraint(equalToConstant: 120).isActive = true;
@@ -63,10 +72,98 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     vStackView.translatesAutoresizingMaskIntoConstraints = false
     vStackView.layoutMargins = UIEdgeInsets.init(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0);
     vStackView.isLayoutMarginsRelativeArrangement = true;
+    
+    clearButton.setTitle("Clear", for: .normal)
+    clearButton.backgroundColor = defaultColor
+    
+    clearButton.layer.cornerRadius = buttonCornerRadius
+    clearButton.addTarget(self, action: #selector(didTapClearButton), for: .touchUpInside)
+    
+    nextStepButton.setTitle("Next", for: .normal)
+    nextStepButton.backgroundColor = defaultColor
+    nextStepButton.layer.cornerRadius = buttonCornerRadius
+    
+    hStackView.addArrangedSubview(clearButton)
+    hStackView.addArrangedSubview(nextStepButton)
+    nextStepButton.leftAnchor.constraint(equalTo: clearButton.rightAnchor, constant: 4.0).isActive = true
+    hStackView.axis = .horizontal
+    hStackView.alignment = .center
+    hStackView.distribution = .fillEqually
+    hStackView.layoutMargins = UIEdgeInsets.init(top: 4.0, left: 16.0, bottom: 0.0, right: 16.0)
+    hStackView.isLayoutMarginsRelativeArrangement = true
+    hStackView.translatesAutoresizingMaskIntoConstraints = false
+    
+    vStackView.addArrangedSubview(hStackView)
+    hStackView.topAnchor.constraint(equalTo: matrixInputView.bottomAnchor).isActive = true;
+    hStackView.widthAnchor.constraint(equalTo: vStackView.widthAnchor).isActive = true
+  }
+  
+  @objc func didTapClearButton() {
+    matrixInputView.text = matrixInputViewPlaceholderText
+    matrixInputView.resignFirstResponder()
+    matrixInputViewHasValidInput = false
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  // MARK: helper methods
+  
+  func TitleFromCalculationType(type: calculationType) -> String {
+    switch type {
+      case .APlusB:
+        return "A + B"
+      case .AMinusB:
+        return "A - B"
+      case .ATimesB:
+        return "A x B"
+      case .APlusBTimesC:
+        return "A + B x C"
+      case .ATimesBPlusC:
+        return "A x B + C"
+      case .AMinusBTimesC:
+        return "A - B x C"
+      case .ATimesBMinusC:
+        return "A x B - C"
+      case .ATimesBTimesC:
+        return "A x B x C"
+      case .ATimesBTimesAInverse:
+        return "A x B x inv(A)"
+    }
+  }
+  
+  func UpdateSteps() {
+    currentStepNumber = 1;
+    switch matrixCalculationType {
+      case .APlusB:
+        numberOfStepsNeededForInput = 2;
+        break;
+      case .AMinusB:
+        numberOfStepsNeededForInput = 2;
+        break;
+      case .ATimesB:
+        numberOfStepsNeededForInput = 2;
+        break;
+      case .APlusBTimesC:
+        numberOfStepsNeededForInput = 3;
+        break;
+      case .ATimesBPlusC:
+        numberOfStepsNeededForInput = 3;
+        break;
+      case .AMinusBTimesC:
+        numberOfStepsNeededForInput = 3;
+        break;
+      case .ATimesBMinusC:
+        numberOfStepsNeededForInput = 3;
+        break;
+      case .ATimesBTimesC:
+        numberOfStepsNeededForInput = 3;
+        break;
+      case .ATimesBTimesAInverse:
+        numberOfStepsNeededForInput = 2;
+        break;
+    }
   }
   
   // MARK: Lifecycle methods
@@ -75,6 +172,7 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     super.viewDidLoad()
     
     self.navigationController?.setNavigationBarHidden(false, animated: false)
+    self.navigationItem.title = TitleFromCalculationType(type:matrixCalculationType)
     self.view.backgroundColor = .white
     self.view.addSubview(vStackView)
     
@@ -104,12 +202,7 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   func textViewDidEndEditing(_ textView: UITextView) {
     let currentText = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
     if (currentText.count == 0) {
-      textView.text = """
-      Enter your matrix like:
-      1 2 3
-      4 5 6
-      7 8 9
-      """
+      textView.text = matrixInputViewPlaceholderText
       matrixInputViewHasValidInput = false
     } else {
       matrixInputViewHasValidInput = true

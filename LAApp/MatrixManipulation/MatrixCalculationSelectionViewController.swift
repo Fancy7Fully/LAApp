@@ -76,11 +76,7 @@ class MatrixCalculationSelectionViewController: UIViewController {
   // MARK: Button methods
   
   @objc func didTapAPlusBButton() {
-    let col1: [Float] = [0, 4, 7]
-    let col2: [Float] = [1, 2, 8]
-    let col3: [Float] = [3, 6, 9]
-    let newMatrix: Matrix = Matrix.init(entryArray: [col1, col2, col3])
-    print(newMatrix.determinant)
+    
   }
   
   @objc func didTapAMinusBButton() {
