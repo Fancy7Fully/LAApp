@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-enum calculationType {
+enum CalculationType {
   case APlusB, AMinusB, ATimesB, APlusBTimesC, ATimesBPlusC, AMinusBTimesC,ATimesBMinusC, ATimesBTimesC, ATimesBTimesAInverse
 }
 

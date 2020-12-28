@@ -15,27 +15,31 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   var vStackView: UIStackView = UIStackView()
   var hStackView: UIStackView = UIStackView()
   var titleLabel: UILabel = UILabel()
-  var matrixCalculationType: calculationType;
+  var matrixCalculationType: CalculationType;
   var matrixInputView: UITextView = UITextView()
   var matrixInputViewHasValidInput = false
   var numberOfStepsNeededForInput: Int = 0
   var currentStepNumber: Int = 0
   var clearButton: UIButton = UIButton()
   var nextStepButton: UIButton = UIButton()
+  var matrixA: Matrix = Matrix(entryArray: [[]])
+  var matrixB: Matrix = Matrix(entryArray: [[]])
+  var matrixC: Matrix = Matrix(entryArray: [[]])
+  
   let matrixInputViewPlaceholderText = """
       Enter your matrix like this:
-      1 0 0
-      0 1 0
-      0 0 1
+      1.2    2    -3
+      3      4    1/2
+      0.01   0    1
       """
   
   // MARK: init
   
-  convenience init(type: calculationType) {
+  convenience init(type: CalculationType) {
     self.init(nibName:nil, bundle:nil, type: type)
   }
   
-  init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?, type: calculationType) {
+  init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?, type: CalculationType) {
     matrixCalculationType = type
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     UpdateSteps()
@@ -82,6 +86,7 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     nextStepButton.setTitle("Next", for: .normal)
     nextStepButton.backgroundColor = defaultColor
     nextStepButton.layer.cornerRadius = buttonCornerRadius
+    nextStepButton.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
     
     hStackView.addArrangedSubview(clearButton)
     hStackView.addArrangedSubview(nextStepButton)
@@ -100,9 +105,53 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   
   @objc func didTapClearButton() {
     matrixInputView.text = matrixInputViewPlaceholderText
-    matrixInputView.resignFirstResponder()
+    if (matrixInputView.isFirstResponder) {
+      matrixInputView.resignFirstResponder()
+    }
     matrixInputViewHasValidInput = false
   }
+  
+  @objc func didTapNextButton() {
+    if (matrixInputView.isFirstResponder) {
+      matrixInputView.resignFirstResponder()
+    }
+    verifyMatrixInputIsValid()
+    
+  }
+  
+  func verifyMatrixInputIsValid() {
+    if (!matrixInputOnlyContainsSupportedSymbols()) {
+      let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: .ContainsInvalidCharacters)
+      self.present(alertMessage, animated: true, completion: nil)
+      return
+    }
+    
+    if (!matrixInputContainsOnlyValidNumbers()) {
+      let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: .ContainsInvalidNumbers)
+      self.present(alertMessage, animated: true, completion: nil)
+    }
+    
+  }
+  
+  func matrixInputOnlyContainsSupportedSymbols() -> Bool {
+    let inputText = matrixInputView.text;
+    return inputText?.range(of: #"^(-*[0-9]*\/*\.*[0-9]*\s*\n*)*$"#, options: .regularExpression) != nil
+  }
+  
+  func matrixInputContainsOnlyValidNumbers() -> Bool {
+    let inputText = matrixInputView.text;
+    return inputText?.range(of: #"^(-?[0-9]+((\/|\.)?[0-9]+)?(\s|\n)*)*$"#, options: .regularExpression) != nil
+  }
+  
+  func registerCurrentMatrix() {
+    
+  }
+  
+  func updateContentForNextStep() {
+    
+  }
+  
+  
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -110,7 +159,7 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   
   // MARK: helper methods
   
-  func TitleFromCalculationType(type: calculationType) -> String {
+  func TitleFromCalculationType(type: CalculationType) -> String {
     switch type {
       case .APlusB:
         return "A + B"
