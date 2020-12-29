@@ -120,27 +120,17 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   }
   
   func verifyMatrixInputIsValid() {
-    if (!matrixInputOnlyContainsSupportedSymbols()) {
+    if (!MatrixInputVerificationHelpers.InputOnlyContainsSupportedSymbols(text: matrixInputView.text)) {
       let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: .ContainsInvalidCharacters)
       self.present(alertMessage, animated: true, completion: nil)
       return
     }
     
-    if (!matrixInputContainsOnlyValidNumbers()) {
+    if (!MatrixInputVerificationHelpers.InputContainsOnlyValidNumbers(text: matrixInputView.text)) {
       let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: .ContainsInvalidNumbers)
       self.present(alertMessage, animated: true, completion: nil)
     }
     
-  }
-  
-  func matrixInputOnlyContainsSupportedSymbols() -> Bool {
-    let inputText = matrixInputView.text;
-    return inputText?.range(of: #"^(-*[0-9]*\/*\.*[0-9]*\s*\n*)*$"#, options: .regularExpression) != nil
-  }
-  
-  func matrixInputContainsOnlyValidNumbers() -> Bool {
-    let inputText = matrixInputView.text;
-    return inputText?.range(of: #"^(-?[0-9]+((\/|\.)?[0-9]+)?(\s|\n)*)*$"#, options: .regularExpression) != nil
   }
   
   func registerCurrentMatrix() {
