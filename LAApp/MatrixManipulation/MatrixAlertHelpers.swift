@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 enum MatrixInputAlertType{
-  case ContainsInvalidCharacters, ContainsInvalidNumbers, EmptyInput
+  case ContainsInvalidCharacters, ContainsInvalidNumbers, EmptyInput, InvalidMatrix
 }
 
 class MatrixAlertHelper {
@@ -30,6 +30,11 @@ class MatrixAlertHelper {
     case .EmptyInput:
       let alert = UIAlertController(title: "Invalid Matrix Input",
                                message: "The matrix input is empty. Please enter a valid matrix before moving on to next step.", preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+      return alert
+    case .InvalidMatrix:
+      let alert = UIAlertController(title: "Invalid Matrix Input",
+                               message: "The matrix input is invalid. Please enter a valid matrix before moving on to next step.", preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
       return alert
     }

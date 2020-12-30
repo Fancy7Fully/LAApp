@@ -17,7 +17,7 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   var titleLabel: UILabel = UILabel()
   var matrixCalculationType: CalculationType;
   var matrixInputView: UITextView = UITextView()
-  var matrixInputViewHasValidInput = false
+  var matrixInputViewHasInput = false
   var numberOfStepsNeededForInput: Int = 0
   var currentStepNumber: Int = 0
   var clearButton: UIButton = UIButton()
@@ -108,7 +108,7 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     if (matrixInputView.isFirstResponder) {
       matrixInputView.resignFirstResponder()
     }
-    matrixInputViewHasValidInput = false
+    matrixInputViewHasInput = false
   }
   
   @objc func didTapNextButton() {
@@ -116,17 +116,23 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
       matrixInputView.resignFirstResponder()
     }
     verifyMatrixInputIsValid()
-    
+    registerCurrentMatrix()
   }
   
   func verifyMatrixInputIsValid() {
-    if (!MatrixInputVerificationHelpers.InputOnlyContainsSupportedSymbols(text: matrixInputView.text)) {
+    if (!matrixInputViewHasInput) {
+      let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: .EmptyInput)
+      self.present(alertMessage, animated: true, completion: nil)
+      return
+    }
+    
+    if (!MatrixInputHelpers.InputOnlyContainsSupportedSymbols(text: matrixInputView.text)) {
       let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: .ContainsInvalidCharacters)
       self.present(alertMessage, animated: true, completion: nil)
       return
     }
     
-    if (!MatrixInputVerificationHelpers.InputContainsOnlyValidNumbers(text: matrixInputView.text)) {
+    if (!MatrixInputHelpers.InputContainsOnlyValidNumbers(text: matrixInputView.text)) {
       let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: .ContainsInvalidNumbers)
       self.present(alertMessage, animated: true, completion: nil)
     }
@@ -134,7 +140,13 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   }
   
   func registerCurrentMatrix() {
-    
+    if (currentStepNumber == 1) {
+      matrixA = MatrixInputHelpers.ParseInput(text: matrixInputView.text)
+    } else if (currentStepNumber == 2) {
+      matrixB = MatrixInputHelpers.ParseInput(text: matrixInputView.text)
+    } else if (currentStepNumber == 3) {
+      matrixC = MatrixInputHelpers.ParseInput(text: matrixInputView.text)
+    }
   }
   
   func updateContentForNextStep() {
@@ -233,7 +245,7 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   
   func textViewDidBeginEditing(_ textView: UITextView) {
     textView.becomeFirstResponder()
-    if (!matrixInputViewHasValidInput) {
+    if (!matrixInputViewHasInput) {
       textView.text = ""
     }
   }
@@ -242,9 +254,9 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     let currentText = textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
     if (currentText.count == 0) {
       textView.text = matrixInputViewPlaceholderText
-      matrixInputViewHasValidInput = false
+      matrixInputViewHasInput = false
     } else {
-      matrixInputViewHasValidInput = true
+      matrixInputViewHasInput = true
     }
   }
 }
