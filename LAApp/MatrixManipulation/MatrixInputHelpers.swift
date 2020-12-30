@@ -34,9 +34,9 @@ class MatrixInputHelpers {
           return false
         }
       }
-      
-      return true
     }
+    
+    return true
   }
   
   static func ParseInput(text: String) -> Matrix {
