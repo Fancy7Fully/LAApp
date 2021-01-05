@@ -1,0 +1,22 @@
+Plan for this app v0
+
+Functions to support:
+1. Matrix related stuffs: calculation, rank, rref, inverse, determinant etc
+2. Linear equation solution
+3. Linear combination and linear span
+	- Does this linear combination contain this vector?
+	- Does this linear combination spans R2/3/4 etc
+	- Does Span{a,b,c} = Span{d,e}
+	- Linear independence
+	- Base of a span
+	- Transition matrix from S to T
+4. Nullspace and nullity
+5. Orthogonality
+	- Orthogonal bases
+	- Orthonormal bases
+	- Orthogonal matrices
+6. Diagonalization
+	- Eigenvalues and eigenvectors
+	- Diagonalization
+	- Orthogonal diagonalization
+7. Linear transformation
