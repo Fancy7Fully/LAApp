@@ -41,8 +41,37 @@ class MatrixInputHelpers {
   
   static func ParseInput(text: String) -> Matrix {
     let rows : [String] = (text.components(separatedBy: "\n")).filter{!$0.isEmpty}
-    
-    return Matrix(entryArray: [[]])
+    var entries : [[Float]] = []
+    rows.forEach{ row in
+      entries.append(
+        row.components(separatedBy: .whitespaces).map{
+          Float($0)!
+        }
+      )
+    }
+    return Matrix(entryArray: entries)
+  }
+  
+  static func CalculateDenominator(text: String) -> Int {
+    var txt = text;
+    var index = text.firstIndex(of: "/") ?? nil
+    var denominator = 1;
+    while (index != nil) {
+      let idxAfter = txt.index(after: index!)
+      txt = String(txt[idxAfter...])
+      let firstSpaceAfter = txt.firstIndex(of: " ") ?? txt.endIndex
+      let firstEOLAfter = txt.firstIndex(of: "\n") ?? txt.endIndex
+      var denomEndIndex = txt.startIndex
+      if (firstEOLAfter < firstSpaceAfter) {
+        denomEndIndex = firstEOLAfter
+      } else {
+        denomEndIndex = firstSpaceAfter
+      }
+      let denom = Int(txt[..<denomEndIndex])
+      denominator = denominator * denom!
+      index = txt.firstIndex(of: "/") ?? nil
+    }
+    return denominator
   }
 }
 

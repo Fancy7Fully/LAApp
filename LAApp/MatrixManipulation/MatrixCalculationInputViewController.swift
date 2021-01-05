@@ -137,13 +137,26 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
       self.present(alertMessage, animated: true, completion: nil)
     }
     
+    if (!MatrixInputHelpers.VerifyEntryNumberIsSameAcrossRows(text: matrixInputView.text)) {
+      let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: .DifferentNumberOfEntries)
+      self.present(alertMessage, animated: true, completion: nil)
+    }
   }
   
   func registerCurrentMatrix() {
+    let index = matrixInputView.text.firstIndex(of: "/")
+    if (index != nil) {
+      let denominator = MatrixInputHelpers.CalculateDenominator(text: matrixInputView.text)
+      // TODO: handle the rest processes
+    } else {
+      // TODO: handle when there's no denominator
+    }
     if (currentStepNumber == 1) {
       matrixA = MatrixInputHelpers.ParseInput(text: matrixInputView.text)
+      print(matrixA.entries)
     } else if (currentStepNumber == 2) {
       matrixB = MatrixInputHelpers.ParseInput(text: matrixInputView.text)
+      
     } else if (currentStepNumber == 3) {
       matrixC = MatrixInputHelpers.ParseInput(text: matrixInputView.text)
     }

@@ -18,7 +18,7 @@ class Matrix: NSObject {
   
   var hasDeterminant: Bool = false;
   
-  init(entryArray: [[Float]]) {
+  init(entryArray: [[Float]], denominator: Int = 1) {
     entries = entryArray
     rowNumber = entryArray.count;
     colNumber = entryArray[0].count;
@@ -43,20 +43,20 @@ class Matrix: NSObject {
     
     var det: Float = 0;
     
-    var entriesWithoutFirstRow: [[Float]] = []
+    var entriesWithoutFirstCol: [[Float]] = []
     for i in 0..<matrix.count {
       var columnEntry: [Float] = []
       for j in 1..<matrix.count {
         columnEntry.append(entries[i][j])
       }
-      entriesWithoutFirstRow.append(columnEntry)
+      entriesWithoutFirstCol.append(columnEntry)
     }
     
     for i in 0..<matrix.count {
       var newEntries: [[Float]] = []
       for j in 0..<matrix.count {
         if i != j {
-          newEntries.append(entriesWithoutFirstRow[j])
+          newEntries.append(entriesWithoutFirstCol[j])
         }
       }
       
