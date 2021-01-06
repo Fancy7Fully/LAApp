@@ -22,9 +22,11 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   var currentStepNumber: Int = 0
   var clearButton: UIButton = UIButton()
   var nextStepButton: UIButton = UIButton()
+  var backButton: UIButton = UIButton()
   var matrixA: Matrix = Matrix(entryArray: [[]])
   var matrixB: Matrix = Matrix(entryArray: [[]])
   var matrixC: Matrix = Matrix(entryArray: [[]])
+  var inputTexts: [String] = []
   
   let matrixInputViewPlaceholderText = """
       Enter your matrix like this:
@@ -88,6 +90,12 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     nextStepButton.layer.cornerRadius = buttonCornerRadius
     nextStepButton.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
     
+    backButton.setTitle("Back", for: .normal)
+    backButton.backgroundColor = defaultColor
+    backButton.layer.cornerRadius = buttonCornerRadius
+    backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+    backButton.isHidden = true
+    
     hStackView.addArrangedSubview(clearButton)
     hStackView.addArrangedSubview(nextStepButton)
     nextStepButton.leftAnchor.constraint(equalTo: clearButton.rightAnchor, constant: 4.0).isActive = true
@@ -101,6 +109,9 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     vStackView.addArrangedSubview(hStackView)
     hStackView.topAnchor.constraint(equalTo: matrixInputView.bottomAnchor).isActive = true;
     hStackView.widthAnchor.constraint(equalTo: vStackView.widthAnchor).isActive = true
+    vStackView.addArrangedSubview(backButton)
+//    backButton.widthAnchor.constraint(equalTo: nextStepButton.widthAnchor).isActive = true
+//    backButton.heightAnchor.constraint(equalTo: nextStepButton.heightAnchor).isActive = true
   }
   
   @objc func didTapClearButton() {
@@ -115,8 +126,16 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     if (matrixInputView.isFirstResponder) {
       matrixInputView.resignFirstResponder()
     }
+    if (matrixInputView.text.count == 0 || !matrixInputViewHasInput) {
+      return
+    }
     verifyMatrixInputIsValid()
     registerCurrentMatrix()
+    updateContentForNextStep()
+  }
+  
+  @objc func didTapBackButton() {
+    // TODO: handle back action
   }
   
   func verifyMatrixInputIsValid() {
@@ -155,7 +174,27 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   }
   
   func updateContentForNextStep() {
+    inputTexts.append(matrixInputView.text)
+    currentStepNumber = currentStepNumber + 1
+    if (currentStepNumber > numberOfStepsNeededForInput) {
+      return
+    }
     
+    if (currentStepNumber == numberOfStepsNeededForInput) {
+      nextStepButton.setTitle("Calculate", for: .normal)
+    }
+    matrixInputView.text = matrixInputViewPlaceholderText
+    if (currentStepNumber == 2) {
+      titleLabel.text = "Please Enter Matrix B"
+    } else if (currentStepNumber == 3) {
+      titleLabel.text = "Please Enter Matrix C"
+    }
+    matrixInputViewHasInput = false
+    if backButton.isHidden {
+      backButton.isHidden = false
+      backButton.widthAnchor.constraint(equalToConstant: clearButton.frame.size.width).isActive = true
+      backButton.heightAnchor.constraint(equalToConstant: clearButton.frame.size.height).isActive = true
+    }
   }
   
   
