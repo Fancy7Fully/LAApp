@@ -28,9 +28,9 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   
   let matrixInputViewPlaceholderText = """
       Enter your matrix like this:
-      1.2    2    -3
-      3      4    1/2
-      0.01   0    1
+      1/2    2    -3
+      3/4    4    1/2
+      -1/3   0    1
       """
   
   // MARK: init
@@ -144,16 +144,8 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   }
   
   func registerCurrentMatrix() {
-    let index = matrixInputView.text.firstIndex(of: "/")
-    if (index != nil) {
-      let denominator = MatrixInputHelpers.CalculateDenominator(text: matrixInputView.text)
-      // TODO: handle the rest processes
-    } else {
-      // TODO: handle when there's no denominator
-    }
     if (currentStepNumber == 1) {
       matrixA = MatrixInputHelpers.ParseInput(text: matrixInputView.text)
-      print(matrixA.entries)
     } else if (currentStepNumber == 2) {
       matrixB = MatrixInputHelpers.ParseInput(text: matrixInputView.text)
       

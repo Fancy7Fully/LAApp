@@ -10,11 +10,11 @@ import Foundation
 
 class MatrixInputHelpers {
   static func InputOnlyContainsSupportedSymbols(text: String) -> Bool {
-    return text.range(of: #"^(-*[0-9]*\/*\.*[0-9]*\s*\n*)*$"#, options: .regularExpression) != nil
+    return text.range(of: #"^(-*[0-9]*\/*[0-9]*\s*\n*)*$"#, options: .regularExpression) != nil
   }
   
   static func InputContainsOnlyValidNumbers(text: String) -> Bool {
-    return text.range(of:#"^(-?[0-9]+((\/|\.)?[0-9]+)?(\s|\n)*)*$"#, options: .regularExpression) != nil
+    return text.range(of:#"^(-?[0-9]+(\/?[0-9]+)?(\s|\n)*)*$"#, options: .regularExpression) != nil
   }
   
   static func VerifyEntryNumberIsSameAcrossRows(text: String) -> Bool {
@@ -41,15 +41,24 @@ class MatrixInputHelpers {
   
   static func ParseInput(text: String) -> Matrix {
     let rows : [String] = (text.components(separatedBy: "\n")).filter{!$0.isEmpty}
-    var entries : [[Float]] = []
+    var entries : [[Fraction]] = []
     rows.forEach{ row in
       entries.append(
-        row.components(separatedBy: .whitespaces).map{
-          Float($0)!
+        row.components(separatedBy: .whitespaces).filter{!$0.isEmpty}.map{
+          TurnToFraction(text: $0)
         }
       )
     }
     return Matrix(entryArray: entries)
+  }
+  
+  static func TurnToFraction(text: String) -> Fraction {
+    let index = text.firstIndex(of: "/")
+    if (index == nil) {
+      return Fraction(num: Int(text)!)
+    } else {
+      return Fraction(num: Int(text[..<index!])!, denom: Int(text[text.index(after: index!)...])!)
+    }
   }
   
   static func CalculateDenominator(text: String) -> Int {

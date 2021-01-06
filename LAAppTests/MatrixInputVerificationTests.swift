@@ -30,10 +30,10 @@ class MatrixInputVerificationTests: XCTestCase {
     let text1 = "1 2 3 \n 4 5 6"
     let text2 = "123"
     let text3 = "-12 4 5"
-    let text4 = "1/2 2.2 \n 4 3.2"
-    let text5 = "1 2 3 \n 4 0.2 5"
-    let text6 = "-2.1 -12 -3/5"
-    let text7 = "123-/.234"
+    let text4 = "1/2 22 \n 4 32"
+    let text5 = "1 2 3 \n 4 02 5"
+    let text6 = "-21 -12 -3/5"
+    let text7 = "123-/234"
     XCTAssertTrue(MatrixInputHelpers.InputOnlyContainsSupportedSymbols(text: text1))
     XCTAssertTrue(MatrixInputHelpers.InputOnlyContainsSupportedSymbols(text: text2))
     XCTAssertTrue(MatrixInputHelpers.InputOnlyContainsSupportedSymbols(text: text3))
@@ -57,11 +57,11 @@ class MatrixInputVerificationTests: XCTestCase {
   }
   
   func testMatrixInputHasValidNumbers() throws {
-    let text1 = "1.2 2 3 \n 4 5 6"
-    let text2 = "1/2 -2 3.4 \n 2 3 4.4 \n 0.1 1 2"
+    let text1 = "12 2 3 \n 4 5 6"
+    let text2 = "1/2 -2 34 \n 2 3 44 \n 1 1 2"
     let text3 = "1 2 3 \n 3 4 5"
     let text4 = "0"
-    let text5 = "-0.2 2 3"
+    let text5 = "-2 2 3"
     XCTAssertTrue(MatrixInputHelpers.InputContainsOnlyValidNumbers(text: text1))
     XCTAssertTrue(MatrixInputHelpers.InputContainsOnlyValidNumbers(text: text2))
     XCTAssertTrue(MatrixInputHelpers.InputContainsOnlyValidNumbers(text: text3))
@@ -89,5 +89,36 @@ class MatrixInputVerificationTests: XCTestCase {
     XCTAssertTrue(MatrixInputHelpers.VerifyEntryNumberIsSameAcrossRows(text: text2))
     XCTAssertTrue(MatrixInputHelpers.VerifyEntryNumberIsSameAcrossRows(text: text3))
     XCTAssertTrue(MatrixInputHelpers.VerifyEntryNumberIsSameAcrossRows(text: text4))
+  }
+  
+  func testParseInput() throws {
+    let text1 = "1 2/3 4\n1/1 2/3 3"
+    let text2 = "0 1/1\n1 0/1"
+    let text3 = "1"
+    let text4 = "2/4 1/2 \n 1/4 2/5"
+    let Matrix1 = MatrixInputHelpers.ParseInput(text: text1)
+    let Matrix2 = MatrixInputHelpers.ParseInput(text: text2)
+    let Matrix3 = MatrixInputHelpers.ParseInput(text: text3)
+    let Matrix4 = MatrixInputHelpers.ParseInput(text: text4)
+    
+    XCTAssertEqual(Matrix1.entries[0][0].floatValue(), 1.0)
+    XCTAssertEqual(Matrix1.entries[0][1].floatValue(), 2.0/3.0)
+    XCTAssertEqual(Matrix1.entries[0][2].floatValue(), 4.0)
+    XCTAssertEqual(Matrix1.entries[1][0].floatValue(), 1.0)
+    XCTAssertEqual(Matrix1.entries[1][1].floatValue(), 2.0/3.0)
+    XCTAssertEqual(Matrix1.entries[1][2].floatValue(), 3.0)
+    
+    XCTAssertEqual(Matrix2.entries[0][0].floatValue(), 0.0)
+    XCTAssertEqual(Matrix2.entries[0][1].floatValue(), 1.0)
+    XCTAssertEqual(Matrix2.entries[1][0].floatValue(), 1.0)
+    XCTAssertEqual(Matrix2.entries[1][1].floatValue(), 0.0)
+    
+    XCTAssertEqual(Matrix3.entries[0][0].floatValue(), 1.0)
+    
+    XCTAssertEqual(Matrix4.entries[0][0].floatValue(), 0.5)
+    XCTAssertEqual(Matrix4.entries[0][1].floatValue(), 0.5)
+    XCTAssertEqual(Matrix4.entries[1][0].floatValue(), 0.25)
+    XCTAssertEqual(Matrix4.entries[1][1].floatValue(), 0.4)
+    
   }
 }

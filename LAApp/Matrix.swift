@@ -11,14 +11,14 @@ import Foundation
 class Matrix: NSObject {
   var rowNumber: NSInteger;
   var colNumber: NSInteger;
-  var entries: [[Float]];
+  var entries: [[Fraction]];
   lazy var determinant: Float = {
     return findDeterminant(matrix: self.entries)
   }()
   
   var hasDeterminant: Bool = false;
   
-  init(entryArray: [[Float]], denominator: Int = 1) {
+  init(entryArray: [[Fraction]], denominator: Int = 1) {
     entries = entryArray
     rowNumber = entryArray.count;
     colNumber = entryArray[0].count;
@@ -28,24 +28,24 @@ class Matrix: NSObject {
     }
   }
   
-  private func findDeterminant(matrix: [[Float]]) -> Float {
+  private func findDeterminant(matrix: [[Fraction]]) -> Float {
     if (!hasDeterminant) {
       return Float.greatestFiniteMagnitude
     }
     
     if rowNumber == 1 && colNumber == 1 {
-      return entries[0][0]
+      return entries[0][0].floatValue()
     }
     
     if rowNumber == 2 && colNumber == 2 {
-      return entries[0][0] * entries[1][1] - entries[0][1] * entries[1][0]
+      return entries[0][0].floatValue() * entries[1][1].floatValue() - entries[0][1].floatValue() * entries[1][0].floatValue()
     }
     
     var det: Float = 0;
     
-    var entriesWithoutFirstCol: [[Float]] = []
+    var entriesWithoutFirstCol: [[Fraction]] = []
     for i in 0..<matrix.count {
-      var columnEntry: [Float] = []
+      var columnEntry: [Fraction] = []
       for j in 1..<matrix.count {
         columnEntry.append(entries[i][j])
       }
@@ -53,7 +53,7 @@ class Matrix: NSObject {
     }
     
     for i in 0..<matrix.count {
-      var newEntries: [[Float]] = []
+      var newEntries: [[Fraction]] = []
       for j in 0..<matrix.count {
         if i != j {
           newEntries.append(entriesWithoutFirstCol[j])
@@ -62,9 +62,9 @@ class Matrix: NSObject {
       
       let currentMatrix: Matrix = Matrix.init(entryArray: newEntries)
       if i % 2 == 0 {
-        det = det + currentMatrix.determinant * entries[i][0]
+        det = det + currentMatrix.determinant * entries[i][0].floatValue()
       } else {
-        det = det - currentMatrix.determinant * entries[i][0]
+        det = det - currentMatrix.determinant * entries[i][0].floatValue()
       }
     }
     
