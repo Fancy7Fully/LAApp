@@ -60,6 +60,14 @@ class Fraction: NSObject {
   }
   
   func simplify() -> Fraction {
+    if (numerator == 0) {
+      return Fraction(num: 0)
+    } else if (numerator == 1) {
+      return self
+    } else if (denominator == 1) {
+      return Fraction(num: numerator)
+    }
+    
     let divisor = FractionHelpers.gcd(a: numerator, b: denominator)
     return Fraction(num:numerator / divisor, denom: denominator / divisor)
   }
