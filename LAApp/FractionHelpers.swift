@@ -20,4 +20,12 @@ class FractionHelpers {
     }
     return d;
   }
+  
+  static func FractionToString(fraction: Fraction) -> String {
+    if (fraction.denominator != 1) {
+      return String(fraction.numerator) + "/" + String(fraction.denominator)
+    } else {
+      return String(fraction.numerator)
+    }
+  }
 }

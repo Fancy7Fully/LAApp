@@ -61,6 +61,15 @@ class MatrixInputHelpers {
     }
   }
   
+  static func TextFromMatrix(matrix: Matrix) -> String {
+    var text: String = ""
+    for row in matrix.entries {
+      let rowToString = row.map{FractionHelpers.FractionToString(fraction: $0)}.joined(separator: " ")
+      text = text + rowToString + "\n"
+    }
+    return text;
+  }
+  
   static func CalculateDenominator(text: String) -> Int {
     var txt = text;
     var index = text.firstIndex(of: "/") ?? nil

@@ -26,7 +26,6 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   var matrixA: Matrix = Matrix(entryArray: [[]])
   var matrixB: Matrix = Matrix(entryArray: [[]])
   var matrixC: Matrix = Matrix(entryArray: [[]])
-  var inputTexts: [String] = []
   
   let matrixInputViewPlaceholderText = """
       Enter your matrix like this:
@@ -135,7 +134,57 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   }
   
   @objc func didTapBackButton() {
-    // TODO: handle back action
+    currentStepNumber = currentStepNumber - 1;
+    if (currentStepNumber == 1) {
+      updateMatrixInputViewWithMatrix(matrix: matrixA)
+      titleLabel.text = "Please Enter Matrix A"
+      backButton.isHidden = true
+    } else if (currentStepNumber == 2) {
+      updateMatrixInputViewWithMatrix(matrix: matrixB)
+      titleLabel.text = "Please Enter Matrix B"
+    }
+    nextStepButton.setTitle("Next", for: .normal)
+  }
+  
+  func calculateResult() {
+    switch matrixCalculationType {
+    case .APlusB:
+      do {
+        let result =
+          try MatrixUtil.Add(a: matrixA, b: matrixB)
+        matrixInputView.text = MatrixInputHelpers.TextFromMatrix(matrix: result)
+        print(matrixInputView.text)
+        
+      } catch MatrixUtilError.emptyMatrix {
+        return
+      } catch MatrixUtilError.unsupportedCalculation {
+        return
+      } catch {
+        return
+      }
+      
+    case .AMinusB:
+      return
+    case .ATimesB:
+      return
+    case .ATimesBPlusC:
+      return
+    case .ATimesBMinusC:
+      return
+    case .APlusBTimesC:
+      return
+    case .AMinusBTimesC:
+      return
+    case .ATimesBTimesC:
+      return
+    case .ATimesBTimesAInverse:
+      return
+    }
+  }
+  
+  func updateMatrixInputViewWithMatrix(matrix: Matrix) {
+    matrixInputView.text = MatrixInputHelpers.TextFromMatrix(matrix: matrix)
+    matrixInputViewHasInput = true
   }
   
   func verifyMatrixInputIsValid() {
@@ -174,9 +223,9 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   }
   
   func updateContentForNextStep() {
-    inputTexts.append(matrixInputView.text)
     currentStepNumber = currentStepNumber + 1
     if (currentStepNumber > numberOfStepsNeededForInput) {
+      calculateResult()
       return
     }
     

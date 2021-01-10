@@ -19,6 +19,7 @@
 		95D393C825A59445000BD246 /* Fraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D393C725A59445000BD246 /* Fraction.swift */; };
 		95D393D125A5A119000BD246 /* FractionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D393D025A5A119000BD246 /* FractionHelpers.swift */; };
 		95D393D625A5B082000BD246 /* FractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D393D525A5B082000BD246 /* FractionTests.swift */; };
+		95D393DB25AAFBB4000BD246 /* MatrixUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D393DA25AAFBB4000BD246 /* MatrixUtil.swift */; };
 		95F120A52521B06200B776D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F120A42521B06200B776D7 /* AppDelegate.swift */; };
 		95F120A72521B06200B776D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F120A62521B06200B776D7 /* SceneDelegate.swift */; };
 		95F120A92521B06200B776D7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F120A82521B06200B776D7 /* MainViewController.swift */; };
@@ -57,6 +58,7 @@
 		95D393C725A59445000BD246 /* Fraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fraction.swift; sourceTree = "<group>"; };
 		95D393D025A5A119000BD246 /* FractionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionHelpers.swift; sourceTree = "<group>"; };
 		95D393D525A5B082000BD246 /* FractionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionTests.swift; sourceTree = "<group>"; };
+		95D393DA25AAFBB4000BD246 /* MatrixUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixUtil.swift; sourceTree = "<group>"; };
 		95F120A12521B06200B776D7 /* LAApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LAApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95F120A42521B06200B776D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		95F120A62521B06200B776D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				95D393C725A59445000BD246 /* Fraction.swift */,
 				95A431F4254D2D7800AC4D1D /* Matrix.swift */,
 				95D393D025A5A119000BD246 /* FractionHelpers.swift */,
+				95D393DA25AAFBB4000BD246 /* MatrixUtil.swift */,
 			);
 			path = LAApp;
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 			files = (
 				95F120A92521B06200B776D7 /* MainViewController.swift in Sources */,
 				95D393D125A5A119000BD246 /* FractionHelpers.swift in Sources */,
+				95D393DB25AAFBB4000BD246 /* MatrixUtil.swift in Sources */,
 				950F40CD253553F4000A11EB /* MatrixManipulationLandingViewController.swift in Sources */,
 				95D393BB259B1496000BD246 /* MatrixInputHelpers.swift in Sources */,
 				95D393B6259977A9000BD246 /* MatrixAlertHelpers.swift in Sources */,
