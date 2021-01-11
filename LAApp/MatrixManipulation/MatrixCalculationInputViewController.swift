@@ -146,15 +146,17 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     nextStepButton.setTitle("Next", for: .normal)
   }
   
+  func updateViewWithResult(result: Matrix) {
+    matrixInputView.text = MatrixInputHelpers.TextFromMatrix(matrix: result)
+  }
+  
   func calculateResult() {
     switch matrixCalculationType {
     case .APlusB:
       do {
         let result =
-          try MatrixUtil.Add(a: matrixA, b: matrixB)
-        matrixInputView.text = MatrixInputHelpers.TextFromMatrix(matrix: result)
-        print(matrixInputView.text)
-        
+          try MatrixUtils.Sum(a: matrixA, b: matrixB)
+        updateViewWithResult(result: result)
       } catch MatrixUtilError.emptyMatrix {
         return
       } catch MatrixUtilError.unsupportedCalculation {
@@ -162,11 +164,33 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
       } catch {
         return
       }
-      
+      break;
     case .AMinusB:
-      return
+      do {
+        let result =
+          try MatrixUtils.Difference(a: matrixA, b: matrixB)
+        updateViewWithResult(result: result)
+      } catch MatrixUtilError.emptyMatrix {
+        return
+      } catch MatrixUtilError.unsupportedCalculation {
+        return
+      } catch {
+        return
+      }
+      break;
     case .ATimesB:
-      return
+      do {
+        let result =
+          try MatrixUtils.Product(a: matrixA, b: matrixB)
+        updateViewWithResult(result: result)
+      } catch MatrixUtilError.emptyMatrix {
+        return
+      } catch MatrixUtilError.unsupportedCalculation {
+        return
+      } catch {
+        return
+      }
+      break;
     case .ATimesBPlusC:
       return
     case .ATimesBMinusC:
@@ -261,19 +285,19 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
       case .AMinusB:
         return "A - B"
       case .ATimesB:
-        return "A x B"
+        return "A \u{00D7} B"
       case .APlusBTimesC:
-        return "A + B x C"
+        return "A + B \u{00D7} C"
       case .ATimesBPlusC:
-        return "A x B + C"
+        return "A \u{00D7} B + C"
       case .AMinusBTimesC:
-        return "A - B x C"
+        return "A - B \u{00D7} C"
       case .ATimesBMinusC:
-        return "A x B - C"
+        return "A \u{00D7} B - C"
       case .ATimesBTimesC:
-        return "A x B x C"
+        return "A \u{00D7} B \u{00D7} C"
       case .ATimesBTimesAInverse:
-        return "A x B x inv(A)"
+        return "A \u{00D7} B \u{00D7} inv(A)"
     }
   }
   

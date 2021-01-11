@@ -46,13 +46,13 @@ class MatrixCalculationSelectionViewController: UIViewController {
     
     buttonArray[0].setTitle("A + B", for: .normal);
     buttonArray[1].setTitle("A - B", for: .normal);
-    buttonArray[2].setTitle("A x B", for: .normal);
-    buttonArray[3].setTitle("A + B x C", for: .normal);
-    buttonArray[4].setTitle("A x B + C", for: .normal);
-    buttonArray[5].setTitle("A - B x C", for: .normal);
-    buttonArray[6].setTitle("A x B - C", for: .normal);
-    buttonArray[7].setTitle("A x B x C", for: .normal);
-    buttonArray[8].setTitle("A x B x inv(A)", for: .normal);
+    buttonArray[2].setTitle("A \u{00D7} B", for: .normal);
+    buttonArray[3].setTitle("A + B \u{00D7} C", for: .normal);
+    buttonArray[4].setTitle("A \u{00D7} B + C", for: .normal);
+    buttonArray[5].setTitle("A - B \u{00D7} C", for: .normal);
+    buttonArray[6].setTitle("A \u{00D7} B - C", for: .normal);
+    buttonArray[7].setTitle("A \u{00D7} B \u{00D7} C", for: .normal);
+    buttonArray[8].setTitle("A \u{00D7} B \u{00D7} inv(A)", for: .normal);
     
     buttonArray[0].addTarget(self, action: #selector(didTapAPlusBButton), for: .touchUpInside)
     buttonArray[1].addTarget(self, action: #selector(didTapAMinusBButton), for: .touchUpInside)
@@ -76,17 +76,21 @@ class MatrixCalculationSelectionViewController: UIViewController {
   // MARK: Button methods
   
   @objc func didTapAPlusBButton() {
-    
-  }
-  
-  @objc func didTapAMinusBButton() {
     let controller: UIViewController = MatrixCalculationInputViewController(type: .APlusB)
     
     self.navigationController?.pushViewController(controller, animated: true)
   }
   
-  @objc func didTapATimesBButton() {
+  @objc func didTapAMinusBButton() {
+    let controller: UIViewController = MatrixCalculationInputViewController(type: .AMinusB)
     
+    self.navigationController?.pushViewController(controller, animated: true)
+  }
+  
+  @objc func didTapATimesBButton() {
+    let controller: UIViewController = MatrixCalculationInputViewController(type: .ATimesB)
+    
+    self.navigationController?.pushViewController(controller, animated: true)
   }
   
   @objc func didTabAPlusBTimesCButton() {
