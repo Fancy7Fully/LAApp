@@ -9,7 +9,7 @@
 import Foundation
 
 enum MatrixUtilError: Error {
-  case unsupportedCalculation, emptyMatrix
+  case unsupportedCalculation, emptyMatrix, noInverse
 }
 
 class MatrixUtils {
@@ -114,5 +114,34 @@ class MatrixUtils {
     }
     
     return Matrix(entryArray: entries)
+  }
+  
+  static func FindInverse(matrix: Matrix) throws -> Matrix{
+    if matrix.rowNumber != matrix.colNumber {
+      throw MatrixUtilError.unsupportedCalculation
+    }
+    
+    if (matrix.determinant == 0) {
+      throw MatrixUtilError.noInverse
+    }
+    
+    if (matrix.rowNumber == 1) {
+      return Matrix(entryArray: [[matrix.entries[0][0].inverse()]])
+    }
+    
+    if (matrix.rowNumber == 2) {
+      // ad - bc
+      let multiplierDenom = matrix.entries[0][0].multiply(frac: matrix.entries[1][1]).minus(frac: matrix.entries[0][1].multiply(frac: matrix.entries[1][0]))
+      
+      let multiplier = multiplierDenom.inverse()
+      return Matrix(entryArray: [
+        [matrix.entries[0][0].multiply(frac: multiplier), matrix.entries[0][1].multiply(frac: multiplier)],
+        [matrix.entries[1][0].multiply(frac: multiplier), matrix.entries[1][1].multiply(frac: multiplier)]
+      ])
+    }
+    
+    // TODO: implement the functionality of calculating inverse for
+    // matrices of size 3 and above
+    return Matrix(entryArray: [[]])
   }
 }
