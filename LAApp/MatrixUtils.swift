@@ -82,4 +82,37 @@ class MatrixUtils {
     
     return Matrix(entryArray: resultArray)
   }
+  
+  static func ElementaryAddOperation(rowNumberA: Int, rowNumberB: Int, matrix: Matrix, multiplier: Fraction) -> Matrix {
+    // Performs the elementary row option where
+    // rowNumberA = rowNumberA + multiplier * rowNumberB
+    var entries = matrix.entries
+    for i in 0..<entries[0].count {
+      var entry = entries[rowNumberA][i]
+      entry = entry.add(frac: entries[rowNumberB][i].multiply(frac: multiplier))
+      entries[rowNumberA][i] = entry
+    }
+    
+    return Matrix(entryArray: entries)
+  }
+  
+  static func ElementarySwapOperation(rowNumberA: Int, rowNumberB: Int, matrix: Matrix) -> Matrix {
+    var entries = matrix.entries
+    for i in 0..<entries[0].count {
+      let entry = entries[rowNumberA][i]
+      entries[rowNumberA][i] = entries[rowNumberB][i]
+      entries[rowNumberB][i] = entry
+    }
+    
+    return Matrix(entryArray: entries)
+  }
+  
+  static func ElementaryScaleOperation(rowNumber: Int, matrix: Matrix, multiplier: Fraction) -> Matrix {
+    var entries = matrix.entries
+    for i in 0..<entries[0].count {
+      entries[rowNumber][i] = entries[rowNumber][i].multiply(frac: multiplier)
+    }
+    
+    return Matrix(entryArray: entries)
+  }
 }

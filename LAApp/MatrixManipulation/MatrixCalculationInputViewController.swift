@@ -52,8 +52,8 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     titleLabel.textColor = .black
     titleLabel.font = UIFont.preferredFont(forTextStyle: .headline)
     titleLabel.sizeToFit()
-    titleLabel.widthAnchor.constraint(equalToConstant: titleLabel.frame.size.width).isActive = true
-    titleLabel.heightAnchor.constraint(equalToConstant: titleLabel.frame.size.height).isActive = true
+    titleLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: titleLabel.frame.size.width).isActive = true
+    titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: titleLabel.frame.size.height).isActive = true
     
     vStackView.addArrangedSubview(titleLabel)
     
@@ -71,7 +71,6 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     
     vStackView.addArrangedSubview(matrixInputView);
     vStackView.axis = .vertical
-//    vStackView.distribution = .equalCentering
     vStackView.alignment = .center
     vStackView.spacing = 4.0
     vStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -109,8 +108,6 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     hStackView.topAnchor.constraint(equalTo: matrixInputView.bottomAnchor).isActive = true;
     hStackView.widthAnchor.constraint(equalTo: vStackView.widthAnchor).isActive = true
     vStackView.addArrangedSubview(backButton)
-//    backButton.widthAnchor.constraint(equalTo: nextStepButton.widthAnchor).isActive = true
-//    backButton.heightAnchor.constraint(equalTo: nextStepButton.heightAnchor).isActive = true
   }
   
   @objc func didTapClearButton() {
@@ -158,9 +155,9 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
           try MatrixUtils.Sum(a: matrixA, b: matrixB)
         updateViewWithResult(result: result)
       } catch MatrixUtilError.emptyMatrix {
-        return
+        presentAlertWithType(type: .EmptyInput)
       } catch MatrixUtilError.unsupportedCalculation {
-        return
+        presentAlertWithType(type: .UnableToCalculate)
       } catch {
         return
       }
@@ -171,9 +168,9 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
           try MatrixUtils.Difference(a: matrixA, b: matrixB)
         updateViewWithResult(result: result)
       } catch MatrixUtilError.emptyMatrix {
-        return
+        presentAlertWithType(type: .EmptyInput)
       } catch MatrixUtilError.unsupportedCalculation {
-        return
+        presentAlertWithType(type: .UnableToCalculate)
       } catch {
         return
       }
@@ -184,23 +181,83 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
           try MatrixUtils.Product(a: matrixA, b: matrixB)
         updateViewWithResult(result: result)
       } catch MatrixUtilError.emptyMatrix {
-        return
+        presentAlertWithType(type: .EmptyInput)
       } catch MatrixUtilError.unsupportedCalculation {
-        return
+        presentAlertWithType(type: .UnableToCalculate)
       } catch {
         return
       }
       break;
     case .ATimesBPlusC:
-      return
+      do {
+        var result =
+          try MatrixUtils.Product(a: matrixA, b: matrixB)
+        result = try MatrixUtils.Sum(a: result, b: matrixC)
+        updateViewWithResult(result: result)
+      } catch MatrixUtilError.emptyMatrix {
+        presentAlertWithType(type: .EmptyInput)
+      } catch MatrixUtilError.unsupportedCalculation {
+        presentAlertWithType(type: .UnableToCalculate)
+      } catch {
+        return
+      }
+      break;
     case .ATimesBMinusC:
-      return
+      do {
+        var result =
+          try MatrixUtils.Product(a: matrixA, b: matrixB)
+        result = try MatrixUtils.Difference(a: result, b: matrixC)
+        updateViewWithResult(result: result)
+      } catch MatrixUtilError.emptyMatrix {
+        presentAlertWithType(type: .EmptyInput)
+      } catch MatrixUtilError.unsupportedCalculation {
+        presentAlertWithType(type: .UnableToCalculate)
+      } catch {
+        return
+      }
+      break;
     case .APlusBTimesC:
-      return
+      do {
+        var result =
+          try MatrixUtils.Product(a: matrixB, b: matrixC)
+        result = try MatrixUtils.Sum(a: matrixA, b: result)
+        updateViewWithResult(result: result)
+      } catch MatrixUtilError.emptyMatrix {
+        presentAlertWithType(type: .EmptyInput)
+      } catch MatrixUtilError.unsupportedCalculation {
+        presentAlertWithType(type: .UnableToCalculate)
+      } catch {
+        return
+      }
+      break;
     case .AMinusBTimesC:
-      return
+      do {
+        var result =
+          try MatrixUtils.Product(a: matrixB, b: matrixC)
+        result = try MatrixUtils.Difference(a: matrixA, b: result)
+        updateViewWithResult(result: result)
+      } catch MatrixUtilError.emptyMatrix {
+        presentAlertWithType(type: .EmptyInput)
+      } catch MatrixUtilError.unsupportedCalculation {
+        presentAlertWithType(type: .UnableToCalculate)
+      } catch {
+        return
+      }
+      break;
     case .ATimesBTimesC:
-      return
+      do {
+        var result =
+          try MatrixUtils.Product(a: matrixA, b: matrixB)
+        result = try MatrixUtils.Product(a: result, b: matrixC)
+        updateViewWithResult(result: result)
+      } catch MatrixUtilError.emptyMatrix {
+        presentAlertWithType(type: .EmptyInput)
+      } catch MatrixUtilError.unsupportedCalculation {
+        presentAlertWithType(type: .UnableToCalculate)
+      } catch {
+        return
+      }
+      break;
     case .ATimesBTimesAInverse:
       return
     }
@@ -213,25 +270,21 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   
   func verifyMatrixInputIsValid() {
     if (!matrixInputViewHasInput) {
-      let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: .EmptyInput)
-      self.present(alertMessage, animated: true, completion: nil)
+      presentAlertWithType(type: .EmptyInput)
       return
     }
     
     if (!MatrixInputHelpers.InputOnlyContainsSupportedSymbols(text: matrixInputView.text)) {
-      let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: .ContainsInvalidCharacters)
-      self.present(alertMessage, animated: true, completion: nil)
+      presentAlertWithType(type: .ContainsInvalidCharacters)
       return
     }
     
     if (!MatrixInputHelpers.InputContainsOnlyValidNumbers(text: matrixInputView.text)) {
-      let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: .ContainsInvalidNumbers)
-      self.present(alertMessage, animated: true, completion: nil)
+      presentAlertWithType(type: .ContainsInvalidNumbers)
     }
     
     if (!MatrixInputHelpers.VerifyEntryNumberIsSameAcrossRows(text: matrixInputView.text)) {
-      let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: .DifferentNumberOfEntries)
-      self.present(alertMessage, animated: true, completion: nil)
+      presentAlertWithType(type: .DifferentNumberOfEntries)
     }
   }
   
@@ -270,8 +323,6 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     }
   }
   
-  
-  
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -299,6 +350,11 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
       case .ATimesBTimesAInverse:
         return "A \u{00D7} B \u{00D7} inv(A)"
     }
+  }
+  
+  func presentAlertWithType(type: MatrixInputAlertType) {
+    let alertMessage = MatrixAlertHelper.AlertControllerWithMatrixInputAlertType(type: type)
+    self.present(alertMessage, animated: true, completion: nil)
   }
   
   func UpdateSteps() {
@@ -344,11 +400,8 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     self.view.backgroundColor = .white
     self.view.addSubview(vStackView)
     
-//    let navigationBarHeight: CGFloat = self.navigationController?.navigationBar.frame.size.height ?? 44.0;
     let deviceWidth: CGFloat = UIScreen.main.bounds.size.width;
-//    let deviceHeight: CGFloat = UIScreen.main.bounds.size.height;
     vStackView.widthAnchor.constraint(equalToConstant: deviceWidth).isActive = true;
-//    vStackView.heightAnchor.constraint(equalToConstant: deviceHeight - navigationBarHeight).isActive = true;
     let touchDownEvent = UITapGestureRecognizer(target: self, action: #selector(self.didTouchOutside(_:)))
     self.view.addGestureRecognizer(touchDownEvent)
     

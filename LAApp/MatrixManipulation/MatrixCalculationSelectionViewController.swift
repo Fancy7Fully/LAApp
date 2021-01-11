@@ -94,23 +94,33 @@ class MatrixCalculationSelectionViewController: UIViewController {
   }
   
   @objc func didTabAPlusBTimesCButton() {
+    let controller: UIViewController = MatrixCalculationInputViewController(type: .APlusBTimesC)
     
+    self.navigationController?.pushViewController(controller, animated: true)
   }
   
   @objc func didTabATimesBPlusCButton() {
+    let controller: UIViewController = MatrixCalculationInputViewController(type: .ATimesBPlusC)
     
+    self.navigationController?.pushViewController(controller, animated: true)
   }
   
   @objc func didTabAMinusBTimesCButton() {
+    let controller: UIViewController = MatrixCalculationInputViewController(type: .AMinusBTimesC)
     
+    self.navigationController?.pushViewController(controller, animated: true)
   }
   
   @objc func didTapATimesBMinusCButton() {
+    let controller: UIViewController = MatrixCalculationInputViewController(type: .ATimesBMinusC)
     
+    self.navigationController?.pushViewController(controller, animated: true)
   }
   
   @objc func didTapATimesBTimesCButton() {
+    let controller: UIViewController = MatrixCalculationInputViewController(type: .ATimesBTimesC)
     
+    self.navigationController?.pushViewController(controller, animated: true)
   }
   
   @objc func didTapATimesBTimesAInverseButton() {

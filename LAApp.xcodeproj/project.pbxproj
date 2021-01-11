@@ -20,6 +20,7 @@
 		95D393D125A5A119000BD246 /* FractionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D393D025A5A119000BD246 /* FractionHelpers.swift */; };
 		95D393D625A5B082000BD246 /* FractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D393D525A5B082000BD246 /* FractionTests.swift */; };
 		95D393DB25AAFBB4000BD246 /* MatrixUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D393DA25AAFBB4000BD246 /* MatrixUtils.swift */; };
+		95D393E625AC3E0E000BD246 /* MatrixUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D393E525AC3E0E000BD246 /* MatrixUtilTests.swift */; };
 		95F120A52521B06200B776D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F120A42521B06200B776D7 /* AppDelegate.swift */; };
 		95F120A72521B06200B776D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F120A62521B06200B776D7 /* SceneDelegate.swift */; };
 		95F120A92521B06200B776D7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F120A82521B06200B776D7 /* MainViewController.swift */; };
@@ -59,6 +60,7 @@
 		95D393D025A5A119000BD246 /* FractionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionHelpers.swift; sourceTree = "<group>"; };
 		95D393D525A5B082000BD246 /* FractionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionTests.swift; sourceTree = "<group>"; };
 		95D393DA25AAFBB4000BD246 /* MatrixUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixUtils.swift; sourceTree = "<group>"; };
+		95D393E525AC3E0E000BD246 /* MatrixUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixUtilTests.swift; sourceTree = "<group>"; };
 		95F120A12521B06200B776D7 /* LAApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LAApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95F120A42521B06200B776D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		95F120A62521B06200B776D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				95F120BD2521B06700B776D7 /* Info.plist */,
 				95D393BF259B16DD000BD246 /* MatrixInputVerificationTests.swift */,
 				95D393D525A5B082000BD246 /* FractionTests.swift */,
+				95D393E525AC3E0E000BD246 /* MatrixUtilTests.swift */,
 			);
 			path = LAAppTests;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 			files = (
 				95D393C0259B16DD000BD246 /* MatrixInputVerificationTests.swift in Sources */,
 				95F120BC2521B06700B776D7 /* LAAppTests.swift in Sources */,
+				95D393E625AC3E0E000BD246 /* MatrixUtilTests.swift in Sources */,
 				95D393D625A5B082000BD246 /* FractionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -71,4 +71,8 @@ class Fraction: NSObject {
     let divisor = FractionHelpers.gcd(a: numerator, b: denominator)
     return Fraction(num:numerator / divisor, denom: denominator / divisor)
   }
+  
+  func inverse() -> Fraction {
+    return Fraction(num: denominator, denom: numerator)
+  }
 }
