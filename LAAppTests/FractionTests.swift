@@ -37,6 +37,28 @@ class FractionTests: XCTestCase {
     XCTAssertEqual(f1.add(frac: f3).floatValue(), 7.0/4.0)
   }
   
+  func testFractionSubtraction() throws {
+    let f1 = Fraction(num: 1)
+    let f2 = Fraction(num: 2, denom:  3)
+    let f3 = Fraction(num: 3, denom: 4)
+    
+    XCTAssertEqual(f1.minus(frac: f2).floatValue(), 1.0/3.0)
+    XCTAssertEqual(f2.minus(frac: f1).floatValue(), -1.0/3.0)
+    XCTAssertEqual(f1.minus(frac: f3).floatValue(), 1.0/4.0)
+  }
+  
+  func testFractionProduct() throws {
+    let f1 = Fraction(num: 1)
+    let f2 = Fraction(num: 2, denom:  3)
+    let f3 = Fraction(num: 3, denom: 4)
+    
+    XCTAssertEqual(f1.multiply(frac: f2).floatValue(), 2.0/3.0)
+    XCTAssertEqual(f2.multiply(frac: f1).floatValue(), 2.0/3.0)
+    XCTAssertEqual(f1.multiply(frac: f3).floatValue(), 3.0/4.0)
+    XCTAssertEqual(f2.multiply(frac: f3).floatValue(), 1.0/2.0)
+  }
+
+  
   
 
     func testPerformanceExample() throws {

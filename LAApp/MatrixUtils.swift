@@ -110,7 +110,25 @@ class MatrixUtils {
   static func ElementaryScaleOperation(rowNumber: Int, matrix: Matrix, multiplier: Fraction) -> Matrix {
     var entries = matrix.entries
     for i in 0..<entries[0].count {
-      entries[rowNumber][i] = entries[rowNumber][i].multiply(frac: multiplier)
+      let result = entries[rowNumber][i].multiply(frac: multiplier)
+      entries[rowNumber][i] = result
+    }
+    
+    return Matrix(entryArray: entries)
+  }
+  
+  static func IdentityMatrix(size: Int) -> Matrix {
+    var entries: [[Fraction]] = []
+    for i in 0..<size {
+      var row: [Fraction] = []
+      for j in 0..<size {
+        if (i == j) {
+          row.append(Fraction(num: 1))
+        } else {
+          row.append(Fraction(num: 0))
+        }
+      }
+      entries.append(row)
     }
     
     return Matrix(entryArray: entries)
@@ -140,8 +158,37 @@ class MatrixUtils {
       ])
     }
     
-    // TODO: implement the functionality of calculating inverse for
-    // matrices of size 3 and above
-    return Matrix(entryArray: [[]])
+    var currentRow = 0
+    let totalRows = matrix.entries.count
+    var inverseMatrix = MatrixUtils.IdentityMatrix(size: totalRows)
+    var m = matrix
+    while (currentRow < totalRows) {
+      let currentCol = currentRow
+      if (m.entries[currentRow][currentCol].floatValue() == 0.0) {
+        var rowToSwap = currentRow;
+        for i in (currentRow + 1)..<totalRows {
+          if (m.entries[i][currentCol].floatValue() != 0.0) {
+            rowToSwap = i;
+            break;
+          }
+        }
+        m = MatrixUtils.ElementarySwapOperation(rowNumberA: currentRow, rowNumberB: rowToSwap, matrix: m)
+        inverseMatrix = MatrixUtils.ElementarySwapOperation(rowNumberA: currentRow, rowNumberB: rowToSwap, matrix: inverseMatrix)
+      } else {
+          let multiplier = m.entries[currentRow][currentCol].inverse()
+          m = MatrixUtils.ElementaryScaleOperation(rowNumber: currentRow, matrix: m, multiplier: multiplier)
+          inverseMatrix = MatrixUtils.ElementaryScaleOperation(rowNumber: currentRow, matrix: inverseMatrix, multiplier: multiplier)
+          for i in 0..<totalRows {
+            if (m.entries[i][currentCol].floatValue() != 0 && i != currentRow) {
+              let multiplier = m.entries[i][currentCol].negate()
+              m = MatrixUtils.ElementaryAddOperation(rowNumberA: i, rowNumberB: currentRow, matrix: m, multiplier: multiplier)
+              inverseMatrix = MatrixUtils.ElementaryAddOperation(rowNumberA: i, rowNumberB: currentRow, matrix: inverseMatrix, multiplier: multiplier)
+            }
+          }
+        currentRow = currentRow + 1
+      }
+    }
+    
+    return inverseMatrix
   }
 }

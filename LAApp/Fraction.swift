@@ -46,7 +46,7 @@ class Fraction: NSObject {
   
   func minus(frac: Fraction) -> Fraction {
     if (denominator == frac.denominator && denominator == 1) {
-      return Fraction(num: numerator - frac.numerator)
+      return Fraction(num: (numerator - frac.numerator))
     }
     
     let commonDenominator = denominator * frac.denominator
@@ -63,7 +63,7 @@ class Fraction: NSObject {
     if (numerator == 0) {
       return Fraction(num: 0)
     } else if (numerator == 1) {
-      return self
+      return Fraction(num: 1, denom: denominator)
     } else if (denominator == 1) {
       return Fraction(num: numerator)
     }
@@ -74,5 +74,9 @@ class Fraction: NSObject {
   
   func inverse() -> Fraction {
     return Fraction(num: denominator, denom: numerator)
+  }
+  
+  func negate() -> Fraction {
+    return Fraction(num: 0 - numerator, denom: denominator)
   }
 }
