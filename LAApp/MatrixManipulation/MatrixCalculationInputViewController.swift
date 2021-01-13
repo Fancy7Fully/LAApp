@@ -112,6 +112,7 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   
   @objc func didTapClearButton() {
     matrixInputView.text = matrixInputViewPlaceholderText
+    matrixInputView.textColor = .darkGray
     if (matrixInputView.isFirstResponder) {
       matrixInputView.resignFirstResponder()
     }
@@ -132,6 +133,8 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   
   @objc func didTapBackButton() {
     currentStepNumber = currentStepNumber - 1;
+    vStackView.removeArrangedSubview(titleLabel)
+    
     if (currentStepNumber == 1) {
       updateMatrixInputViewWithMatrix(matrix: matrixA)
       titleLabel.text = "Please Enter Matrix A"
@@ -140,14 +143,33 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
       updateMatrixInputViewWithMatrix(matrix: matrixB)
       titleLabel.text = "Please Enter Matrix B"
     }
+    
+    titleLabel.sizeToFit()
+    titleLabel.removeConstraints(titleLabel.constraints)
+    titleLabel.widthAnchor.constraint(equalToConstant: titleLabel.frame.size.width).isActive = true
+    titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: titleLabel.frame.size.height).isActive = true
+    vStackView.insertArrangedSubview(titleLabel, at: 0)
+    
+    if (hStackView.isHidden) {
+      hStackView.isHidden = false
+    }
     nextStepButton.setTitle("Next", for: .normal)
   }
   
   func updateViewWithResult(result: Matrix) {
     matrixInputView.text = MatrixInputHelpers.TextFromMatrix(matrix: result)
+    vStackView.removeArrangedSubview(titleLabel)
+    
+    titleLabel.text = "Calculation Result"
+    titleLabel.sizeToFit()
+    titleLabel.removeConstraints(titleLabel.constraints)
+    titleLabel.widthAnchor.constraint(equalToConstant: titleLabel.frame.size.width).isActive = true
+    titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: titleLabel.frame.size.height).isActive = true
+    vStackView.insertArrangedSubview(titleLabel, at: 0)
+    hStackView.isHidden = true
   }
   
-  func calculateResult() {
+  func calculateAndPresentResult() {
     switch matrixCalculationType {
     case .APlusB:
       do {
@@ -302,7 +324,7 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
   func updateContentForNextStep() {
     currentStepNumber = currentStepNumber + 1
     if (currentStepNumber > numberOfStepsNeededForInput) {
-      calculateResult()
+      calculateAndPresentResult()
       return
     }
     
@@ -310,11 +332,21 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
       nextStepButton.setTitle("Calculate", for: .normal)
     }
     matrixInputView.text = matrixInputViewPlaceholderText
+    matrixInputView.textColor = .darkGray
     if (currentStepNumber == 2) {
       titleLabel.text = "Please Enter Matrix B"
     } else if (currentStepNumber == 3) {
       titleLabel.text = "Please Enter Matrix C"
     }
+    
+    vStackView.removeArrangedSubview(titleLabel)
+    
+    titleLabel.sizeToFit()
+    titleLabel.removeConstraints(titleLabel.constraints)
+    titleLabel.widthAnchor.constraint(equalToConstant: titleLabel.frame.size.width).isActive = true
+    titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: titleLabel.frame.size.height).isActive = true
+    vStackView.insertArrangedSubview(titleLabel, at: 0)
+    
     matrixInputViewHasInput = false
     if backButton.isHidden {
       backButton.isHidden = false
@@ -417,6 +449,7 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     textView.becomeFirstResponder()
     if (!matrixInputViewHasInput) {
       textView.text = ""
+      matrixInputView.textColor = .black
     }
   }
   
@@ -425,6 +458,7 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     if (currentText.count == 0) {
       textView.text = matrixInputViewPlaceholderText
       matrixInputViewHasInput = false
+      matrixInputView.textColor = .darkGray
     } else {
       matrixInputViewHasInput = true
     }
