@@ -79,9 +79,9 @@ class MatirxInverseAndRankViewController : UIViewController, UITextViewDelegate 
     findInverseButton.backgroundColor = defaultColor
     findInverseButton.layer.cornerRadius = buttonCornerRadius
     findInverseButton.addTarget(self, action: #selector(didTapFindInverseButton), for: .touchUpInside)
-    clearButton.widthAnchor.constraint(equalToConstant: 120.0).isActive = true
-    findDeterminantButton.widthAnchor.constraint(equalToConstant: 120.0).isActive = true
-    findInverseButton.widthAnchor.constraint(equalToConstant: 120.0).isActive = true
+    clearButton.widthAnchor.constraint(equalToConstant: 200.0).isActive = true
+    findDeterminantButton.widthAnchor.constraint(equalToConstant: 200.0).isActive = true
+    findInverseButton.widthAnchor.constraint(equalToConstant: 200.0).isActive = true
     
     vStackView.addArrangedSubview(clearButton)
     vStackView.addArrangedSubview(findDeterminantButton)
@@ -107,8 +107,8 @@ class MatirxInverseAndRankViewController : UIViewController, UITextViewDelegate 
       return
     }
     verifyMatrixInputIsValid()
-    rank = findRank()
-    presentRank(rank: rank)
+    let matrix = MatrixInputHelpers.ParseInput(text: matrixInputView.text)
+    presentDeterminant(matrix: matrix)
   }
   
   @objc func didTapFindInverseButton() {
@@ -173,8 +173,8 @@ class MatirxInverseAndRankViewController : UIViewController, UITextViewDelegate 
     return count
   }
   
-  func presentRank(rank: Int) {
-    rankLabel.text = "The rank for this matrix is : " + String(rank)
+  func presentDeterminant(matrix: Matrix) {
+    rankLabel.text = "The determinant is : " + String(matrix.determinant.numerator) + "/" + String(matrix.determinant.denominator)
     rankLabel.sizeToFit()
     rankLabel.removeConstraints(rankLabel.constraints)
     rankLabel.widthAnchor.constraint(equalToConstant: rankLabel.frame.size.width).isActive = true

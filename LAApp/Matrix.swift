@@ -12,7 +12,7 @@ class Matrix: NSObject {
   var rowNumber: NSInteger;
   var colNumber: NSInteger;
   var entries: [[Fraction]];
-  lazy var determinant: Float = {
+  lazy var determinant: Fraction = {
     return findDeterminant(matrix: self.entries)
   }()
   
@@ -28,20 +28,18 @@ class Matrix: NSObject {
     }
   }
   
-  private func findDeterminant(matrix: [[Fraction]]) -> Float {
-    if (!hasDeterminant) {
-      return Float.greatestFiniteMagnitude
-    }
+  private func findDeterminant(matrix: [[Fraction]]) -> Fraction {
+    // TODO: handle the case when matrix can't have determinant
     
     if rowNumber == 1 && colNumber == 1 {
-      return entries[0][0].floatValue()
+      return entries[0][0]
     }
     
     if rowNumber == 2 && colNumber == 2 {
-      return entries[0][0].floatValue() * entries[1][1].floatValue() - entries[0][1].floatValue() * entries[1][0].floatValue()
+      return entries[0][0].multiply(frac: entries[1][1]).minus(frac: entries[0][1].multiply(frac: entries[1][0]))
     }
     
-    var det: Float = 0;
+    var det: Fraction = Fraction(num: 0)
     
     var entriesWithoutFirstCol: [[Fraction]] = []
     for i in 0..<matrix.count {
@@ -62,9 +60,9 @@ class Matrix: NSObject {
       
       let currentMatrix: Matrix = Matrix.init(entryArray: newEntries)
       if i % 2 == 0 {
-        det = det + currentMatrix.determinant * entries[i][0].floatValue()
+        det = det.add(frac:currentMatrix.determinant.multiply(frac: entries[i][0]))
       } else {
-        det = det - currentMatrix.determinant * entries[i][0].floatValue()
+        det = det.minus(frac:currentMatrix.determinant.multiply(frac: entries[i][0]))
       }
     }
     

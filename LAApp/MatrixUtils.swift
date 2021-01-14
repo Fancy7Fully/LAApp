@@ -139,7 +139,7 @@ class MatrixUtils {
       throw MatrixUtilError.unsupportedCalculation
     }
     
-    if (matrix.determinant == 0) {
+    if (matrix.determinant.floatValue() == 0) {
       throw MatrixUtilError.noInverse
     }
     
