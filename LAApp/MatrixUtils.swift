@@ -191,4 +191,64 @@ class MatrixUtils {
     
     return inverseMatrix
   }
+  
+  static func REF(matrix: Matrix) -> Matrix {
+    if (matrix.colNumber < 1 || matrix.rowNumber < 1) {
+      return Matrix(entryArray: [[]])
+    }
+    
+    var currentRow = 0
+    let totalRows = matrix.entries.count
+    let totalCols = matrix.entries[0].count
+    var m = matrix
+    while (currentRow < totalRows && currentRow < totalCols) {
+      let currentCol = currentRow
+      if (m.entries[currentRow][currentCol].floatValue() == 0.0) {
+        var rowToSwap = currentRow;
+        for i in (currentRow + 1)..<totalRows {
+          if (m.entries[i][currentCol].floatValue() != 0.0) {
+            rowToSwap = i;
+            break;
+          }
+        }
+        if (rowToSwap == currentRow) {
+          currentRow = currentRow + 1
+        } else {
+          m = MatrixUtils.ElementarySwapOperation(rowNumberA: currentRow, rowNumberB: rowToSwap, matrix: m)
+        }
+      } else {
+          let multiplier = m.entries[currentRow][currentCol].inverse()
+          m = MatrixUtils.ElementaryScaleOperation(rowNumber: currentRow, matrix: m, multiplier: multiplier)
+          for i in (currentRow + 1)..<totalRows {
+            if (m.entries[i][currentCol].floatValue() != 0) {
+              let multiplier = m.entries[i][currentCol].negate()
+              m = MatrixUtils.ElementaryAddOperation(rowNumberA: i, rowNumberB: currentRow, matrix: m, multiplier: multiplier)
+            }
+          }
+        currentRow = currentRow + 1
+      }
+    }
+    
+    return m
+  }
+  
+  static func findRank(matrix: Matrix) -> Int {
+    let ref = MatrixUtils.REF(matrix: matrix)
+    var count = 0
+    for i in 0..<ref.rowNumber {
+      var allZero = true
+      for j in 0..<ref.colNumber {
+        if (ref.entries[i][j].floatValue() != 0.0) {
+          count = count + 1
+          allZero = false
+          break
+        }
+      }
+      if (allZero) {
+        break
+      }
+    }
+    
+    return count
+  }
 }

@@ -52,6 +52,7 @@ class MatrixManipulationLandingViewController : UIViewController {
     buttonArray[7].setTitle("Rank", for: .normal)
     
     buttonArray[0].addTarget(self, action: #selector(didTapMatrixCalculationButton), for: .touchUpInside)
+    buttonArray[6].addTarget(self, action: #selector(didTapInverseAndRankButton), for: .touchUpInside)
     
     stackView.axis = .vertical;
     stackView.distribution = .equalSpacing;
@@ -70,6 +71,13 @@ class MatrixManipulationLandingViewController : UIViewController {
   
   @objc func didTapMatrixCalculationButton() {
     let controller : UIViewController = MatrixCalculationSelectionViewController();
+    
+    self.navigationController?.pushViewController(controller, animated: true)
+  }
+  
+  @objc func didTapInverseAndRankButton() {
+    let controller: UIViewController =
+        MatirxInverseAndRankViewController()
     
     self.navigationController?.pushViewController(controller, animated: true)
   }

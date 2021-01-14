@@ -434,7 +434,7 @@ class MatrixCalculationInputViewController : UIViewController, UITextViewDelegat
     
     let deviceWidth: CGFloat = UIScreen.main.bounds.size.width;
     vStackView.widthAnchor.constraint(equalToConstant: deviceWidth).isActive = true;
-    let touchDownEvent = UITapGestureRecognizer(target: self, action: #selector(self.didTouchOutside(_:)))
+    let touchDownEvent = UITapGestureRecognizer(target: self, action: #selector(didTouchOutside(_:)))
     self.view.addGestureRecognizer(touchDownEvent)
     
   }
