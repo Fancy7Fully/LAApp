@@ -68,7 +68,7 @@ class Fraction: NSObject {
       return Fraction(num: numerator)
     }
     
-    let divisor = FractionHelpers.gcd(a: numerator, b: denominator)
+    let divisor = FractionHelpers.gcd(a: abs(numerator), b: abs(denominator))
     return Fraction(num:numerator / divisor, denom: denominator / divisor)
   }
   
