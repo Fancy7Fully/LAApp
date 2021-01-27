@@ -153,8 +153,8 @@ class MatrixUtils {
       
       let multiplier = multiplierDenom.inverse()
       return Matrix(entryArray: [
-        [matrix.entries[0][0].multiply(frac: multiplier), matrix.entries[0][1].multiply(frac: multiplier)],
-        [matrix.entries[1][0].multiply(frac: multiplier), matrix.entries[1][1].multiply(frac: multiplier)]
+        [matrix.entries[1][1].multiply(frac: multiplier), matrix.entries[0][1].multiply(frac: multiplier).negate()],
+        [matrix.entries[1][0].multiply(frac: multiplier).negate(), matrix.entries[0][0].multiply(frac: multiplier)]
       ])
     }
     
@@ -174,15 +174,21 @@ class MatrixUtils {
         }
         m = MatrixUtils.ElementarySwapOperation(rowNumberA: currentRow, rowNumberB: rowToSwap, matrix: m)
         inverseMatrix = MatrixUtils.ElementarySwapOperation(rowNumberA: currentRow, rowNumberB: rowToSwap, matrix: inverseMatrix)
+        print(MatrixInputHelpers.TextFromMatrix(matrix: m))
+        print(MatrixInputHelpers.TextFromMatrix(matrix: inverseMatrix))
       } else {
           let multiplier = m.entries[currentRow][currentCol].inverse()
           m = MatrixUtils.ElementaryScaleOperation(rowNumber: currentRow, matrix: m, multiplier: multiplier)
           inverseMatrix = MatrixUtils.ElementaryScaleOperation(rowNumber: currentRow, matrix: inverseMatrix, multiplier: multiplier)
+        print(MatrixInputHelpers.TextFromMatrix(matrix: m))
+        print(MatrixInputHelpers.TextFromMatrix(matrix: inverseMatrix))
           for i in 0..<totalRows {
             if (m.entries[i][currentCol].floatValue() != 0 && i != currentRow) {
               let multiplier = m.entries[i][currentCol].negate()
               m = MatrixUtils.ElementaryAddOperation(rowNumberA: i, rowNumberB: currentRow, matrix: m, multiplier: multiplier)
               inverseMatrix = MatrixUtils.ElementaryAddOperation(rowNumberA: i, rowNumberB: currentRow, matrix: inverseMatrix, multiplier: multiplier)
+              print(MatrixInputHelpers.TextFromMatrix(matrix: m))
+              print(MatrixInputHelpers.TextFromMatrix(matrix: inverseMatrix))
             }
           }
         currentRow = currentRow + 1

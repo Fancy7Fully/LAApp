@@ -13,12 +13,13 @@ class MatirxInverseAndRankViewController : UIViewController, UITextViewDelegate 
   var vStackView: UIStackView = UIStackView()
   var titleLabel: UILabel = UILabel()
   var matrixInputView: UITextView = UITextView()
+  var inversePresentationView: UITextView = UITextView()
   var matrixInputViewHasInput = false
   var clearButton: UIButton = UIButton()
   var findDeterminantButton: UIButton = UIButton()
   var findInverseButton: UIButton = UIButton()
   var rank: Int = -1
-  var rankLabel: UILabel = UILabel()
+  var determinantLabel: UILabel = UILabel()
   
   let matrixInputViewPlaceholderText = """
       Enter your matrix like this:
@@ -87,7 +88,19 @@ class MatirxInverseAndRankViewController : UIViewController, UITextViewDelegate 
     vStackView.addArrangedSubview(findDeterminantButton)
     vStackView.addArrangedSubview(findInverseButton)
     
-    rankLabel.isHidden = true
+    inversePresentationView.backgroundColor = UIColor.init(red: 220.0/255.0, green: 220.0/255.0, blue: 220.0/255.0, alpha: 1.0)
+    inversePresentationView.textColor = .darkGray
+    inversePresentationView.layer.cornerRadius = CGFloat(matrixInputCornerRadius);
+    inversePresentationView.isEditable = false
+    inversePresentationView.font = UIFont.systemFont(ofSize: 15.0)
+    
+    inversePresentationView.widthAnchor.constraint(equalToConstant: 200).isActive = true;
+    inversePresentationView.heightAnchor.constraint(equalToConstant: 120).isActive = true;
+    inversePresentationView.isHidden = true
+    
+    vStackView.addArrangedSubview(inversePresentationView)
+    
+    determinantLabel.isHidden = true
   }
   
   @objc func didTapClearButton() {
@@ -97,6 +110,8 @@ class MatirxInverseAndRankViewController : UIViewController, UITextViewDelegate 
       matrixInputView.resignFirstResponder()
     }
     matrixInputViewHasInput = false
+    inversePresentationView.isHidden = true
+    determinantLabel.isHidden = true
   }
   
   @objc func didTapFindDeterminantButton() {
@@ -112,7 +127,16 @@ class MatirxInverseAndRankViewController : UIViewController, UITextViewDelegate 
   }
   
   @objc func didTapFindInverseButton() {
-
+    do {
+      let input = MatrixInputHelpers.ParseInput(text: matrixInputView.text)
+      let inverse =  try MatrixUtils.FindInverse(matrix: input)
+      inversePresentationView.text = MatrixInputHelpers.TextFromMatrix(matrix: inverse)
+      inversePresentationView.isHidden = false
+    } catch MatrixUtilError.noInverse {
+      presentAlertWithType(type: .NoInverse)
+    } catch {
+      // do nothing
+    }
   }
   
   func updateViewWithResult(result: Matrix) {
@@ -174,13 +198,13 @@ class MatirxInverseAndRankViewController : UIViewController, UITextViewDelegate 
   }
   
   func presentDeterminant(matrix: Matrix) {
-    rankLabel.text = "The determinant is : " + String(matrix.determinant.numerator) + "/" + String(matrix.determinant.denominator)
-    rankLabel.sizeToFit()
-    rankLabel.removeConstraints(rankLabel.constraints)
-    rankLabel.widthAnchor.constraint(equalToConstant: rankLabel.frame.size.width).isActive = true
-    rankLabel.heightAnchor.constraint(equalToConstant: rankLabel.frame.size.height).isActive = true
-    rankLabel.isHidden = false
-    vStackView.addArrangedSubview(rankLabel)
+    determinantLabel.text = "The determinant is : " + FractionHelpers.FractionToString(fraction: matrix.determinant)
+    determinantLabel.sizeToFit()
+    determinantLabel.removeConstraints(determinantLabel.constraints)
+    determinantLabel.widthAnchor.constraint(equalToConstant: determinantLabel.frame.size.width).isActive = true
+    determinantLabel.heightAnchor.constraint(equalToConstant: determinantLabel.frame.size.height).isActive = true
+    determinantLabel.isHidden = false
+    vStackView.addArrangedSubview(determinantLabel)
   }
   
   required init?(coder: NSCoder) {

@@ -18,14 +18,29 @@ class FractionHelpers {
       d = r
       r = c % d
     }
-    return d;
+    return abs(d);
   }
   
   static func FractionToString(fraction: Fraction) -> String {
-    if (fraction.denominator != 1) {
-      return String(fraction.numerator) + "/" + String(fraction.denominator)
+    let frac = fraction
+    if (frac.numerator == 0) {
+      return String(0)
+    }
+    
+    if (frac.numerator < 0 && frac.denominator < 0) {
+      frac.numerator = -frac.numerator
+      frac.denominator = -frac.denominator
+    }
+
+    if (frac.numerator > 0 && frac.denominator < 0) {
+      frac.numerator = -frac.numerator
+      frac.denominator = -frac.denominator
+    }
+    
+    if (frac.denominator != 1) {
+      return String(frac.numerator) + "/" + String(frac.denominator)
     } else {
-      return String(fraction.numerator)
+      return String(frac.numerator)
     }
   }
 }

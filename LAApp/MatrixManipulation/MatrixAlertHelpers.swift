@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 enum MatrixInputAlertType{
-  case ContainsInvalidCharacters, ContainsInvalidNumbers, EmptyInput, InvalidMatrix, DifferentNumberOfEntries, UnableToCalculate
+  case ContainsInvalidCharacters, ContainsInvalidNumbers, EmptyInput, InvalidMatrix, DifferentNumberOfEntries, UnableToCalculate, NoInverse
 }
 
 class MatrixAlertHelper {
@@ -45,6 +45,11 @@ class MatrixAlertHelper {
     case .UnableToCalculate:
       let alert = UIAlertController(title: "Invalid Matrix Input",
                                message: "Sizes of your matrices do not support this calculation. Please check on the matrices and try again.", preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+      return alert
+    case .NoInverse:
+      let alert = UIAlertController(title: "Invalid Matrix Input",
+                               message: "Your matrix does not have an inverse. Please check on the matrices and try again.", preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
       return alert
     }

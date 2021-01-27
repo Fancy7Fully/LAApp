@@ -75,21 +75,21 @@ class LAAppTests: XCTestCase {
   
   func test1By1MatrixDeterminant() throws {
     let matrix: Matrix = Matrix.init(entryArray: [[Fraction(num: 1)]])
-    XCTAssertEqual(matrix.determinant, 1.0)
+    XCTAssertEqual(matrix.determinant.floatValue(), 1.0)
   }
   
   func test2By2MatrixDeterminant1() throws {
     let col1: [Fraction] = [Fraction(num: 1), Fraction(num: 0)]
     let col2: [Fraction] = [Fraction(num: 1), Fraction(num: 0)]
     let matrix: Matrix = Matrix.init(entryArray: [col1, col2])
-    XCTAssertEqual(matrix.determinant, 0.0)
+    XCTAssertEqual(matrix.determinant.floatValue(), 0.0)
   }
   
   func test2By2MatrixDeterminant2() throws {
     let col1: [Fraction] = [Fraction(num: 1), Fraction(num: 0)]
     let col2: [Fraction] = [Fraction(num: 0), Fraction(num: 1)]
     let matrix: Matrix = Matrix.init(entryArray: [col1, col2])
-    XCTAssertEqual(matrix.determinant, 1.0)
+    XCTAssertEqual(matrix.determinant.floatValue(), 1.0)
   }
   
   func test3By3MatrixDeterminant() throws{
@@ -97,7 +97,7 @@ class LAAppTests: XCTestCase {
     let col2: [Fraction] = [Fraction(num: 1), Fraction(num: 2), Fraction(num: 8)]
     let col3: [Fraction] = [Fraction(num: 3), Fraction(num: 6), Fraction(num: 9)]
     let matrix: Matrix = Matrix.init(entryArray: [col1, col2, col3])
-    XCTAssertEqual(matrix.determinant, 60.0)
+    XCTAssertEqual(matrix.determinant.floatValue(), 60.0)
     
   }
 
