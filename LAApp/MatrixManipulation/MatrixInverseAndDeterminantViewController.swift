@@ -76,7 +76,7 @@ class MatirxInverseAndRankViewController : UIViewController, UITextViewDelegate 
     findDeterminantButton.layer.cornerRadius = buttonCornerRadius
     findDeterminantButton.addTarget(self, action: #selector(didTapFindDeterminantButton), for: .touchUpInside)
     
-    findInverseButton.setTitle("Find Iverse", for: .normal)
+    findInverseButton.setTitle("Find Inverse", for: .normal)
     findInverseButton.backgroundColor = defaultColor
     findInverseButton.layer.cornerRadius = buttonCornerRadius
     findInverseButton.addTarget(self, action: #selector(didTapFindInverseButton), for: .touchUpInside)
